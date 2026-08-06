@@ -1,0 +1,30 @@
+{
+  "title": "2025 peak season performance across email and SMS",
+  "source": "2026 Peak Season Marketing Report",
+  "series": {
+    "email": { "label": "Email" },
+    "sms": { "label": "SMS" }
+  },
+  "rows": [
+    {
+      "label": "Gross revenue",
+      "email": "$1,132,707,426.53",
+      "sms": "$8,219,537.10"
+    },
+    {
+      "label": "Revenue per order",
+      "email": "$151.90",
+      "sms": "$127.71"
+    },
+    {
+      "label": "Average order rate",
+      "email": "0.02%",
+      "sms": "0.08%"
+    },
+    {
+      "label": "Revenue per message",
+      "email": "$0.03",
+      "sms": "$0.10"
+    }
+  ]
+}

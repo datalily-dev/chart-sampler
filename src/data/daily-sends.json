@@ -1,0 +1,157 @@
+{
+  "title": "Sent per day during BFCM 2025",
+  "range": "November 20 - December 8",
+  "source": "2026 Peak Season Marketing Report",
+  "note": "Points flagged \"derived\": true were recovered from the Figma chart geometry because no published daily figure exists for that date. Replace them if exact numbers become available.",
+  "series": {
+    "email": {
+      "label": "Email",
+      "title": "Emails sent per day during BFCM 2025",
+      "unit": "emails",
+      "axisMax": 1500000000,
+      "axisTicks": [
+        0,
+        300000000,
+        600000000,
+        900000000,
+        1200000000,
+        1500000000
+      ]
+    },
+    "sms": {
+      "label": "SMS",
+      "title": "SMS sent per day during BFCM 2025",
+      "unit": "text messages",
+      "axisMax": 6000000,
+      "axisTicks": [
+        0,
+        1500000,
+        3000000,
+        4500000,
+        6000000
+      ]
+    }
+  },
+  "points": [
+    {
+      "date": "2025-11-20",
+      "email": 981000000,
+      "sms": 1280000,
+      "derived": true
+    },
+    {
+      "date": "2025-11-21",
+      "email": 969000000,
+      "sms": 1840000,
+      "derived": true
+    },
+    {
+      "date": "2025-11-22",
+      "email": 432000000,
+      "sms": 772000,
+      "derived": true
+    },
+    {
+      "date": "2025-11-23",
+      "email": 373000000,
+      "sms": 581000,
+      "derived": true
+    },
+    {
+      "date": "2025-11-24",
+      "email": 886000000,
+      "sms": 1660000,
+      "derived": true
+    },
+    {
+      "date": "2025-11-25",
+      "email": 1080000000,
+      "sms": 2030000,
+      "derived": true
+    },
+    {
+      "date": "2025-11-26",
+      "email": 1013302698,
+      "sms": 1654653,
+      "derived": false,
+      "holiday": "Pre-Thanksgiving Day"
+    },
+    {
+      "date": "2025-11-27",
+      "email": 929582577,
+      "sms": 1517036,
+      "derived": false,
+      "holiday": "Thanksgiving"
+    },
+    {
+      "date": "2025-11-28",
+      "email": 1390289396,
+      "sms": 5430859,
+      "derived": false,
+      "holiday": "Black Friday"
+    },
+    {
+      "date": "2025-11-29",
+      "email": 541884269,
+      "sms": 1555037,
+      "derived": false,
+      "holiday": "Small Business Saturday"
+    },
+    {
+      "date": "2025-11-30",
+      "email": 566000000,
+      "sms": 979000,
+      "derived": true
+    },
+    {
+      "date": "2025-12-01",
+      "email": 1300247595,
+      "sms": 3405629,
+      "derived": false,
+      "holiday": "Cyber Monday"
+    },
+    {
+      "date": "2025-12-02",
+      "email": 1153007717,
+      "sms": 2429545,
+      "derived": false,
+      "holiday": "Giving Tuesday"
+    },
+    {
+      "date": "2025-12-03",
+      "email": 859000000,
+      "sms": 1900000,
+      "derived": true
+    },
+    {
+      "date": "2025-12-04",
+      "email": 941000000,
+      "sms": 1770000,
+      "derived": true
+    },
+    {
+      "date": "2025-12-05",
+      "email": 882000000,
+      "sms": 2540000,
+      "derived": true
+    },
+    {
+      "date": "2025-12-06",
+      "email": 409000000,
+      "sms": 836000,
+      "derived": true
+    },
+    {
+      "date": "2025-12-07",
+      "email": 341000000,
+      "sms": 581000,
+      "derived": true
+    },
+    {
+      "date": "2025-12-08",
+      "email": 709000000,
+      "sms": 1520000,
+      "derived": true
+    }
+  ]
+}

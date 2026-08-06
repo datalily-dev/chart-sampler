@@ -1,0 +1,356 @@
+/**
+ * The two Holiday Lookback interactive components.
+ *
+ * This file plus tokens.css and the component markup is the whole handoff.
+ * There is no build step and no framework: drop these into any page.
+ */
+
+/* ---------------------------------------------------------------- card shell */
+
+.card {
+  box-sizing: border-box;
+  margin: 0;
+  font-family: var(--font-sans);
+  color: var(--peppercorn);
+  border-radius: var(--radius-card);
+  position: relative;
+}
+
+.card *,
+.card *::before,
+.card *::after {
+  box-sizing: border-box;
+}
+
+.card__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.card__title {
+  margin: 0;
+  font-size: 21px;
+  font-weight: 500;
+  line-height: 1.35;
+}
+
+.card__subtitle {
+  margin: 8px 0 0;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+/* ---------------------------------------------------------------- toggle */
+
+.toggle {
+  display: inline-flex;
+  gap: 6px;
+  flex-shrink: 0;
+  padding: 6px;
+  background: var(--white);
+  border: 1px solid var(--toggle-border);
+  border-radius: var(--radius-pill);
+}
+
+/*
+ * Visually hidden but still focusable and still a real form control, so the
+ * toggle is keyboard and screen-reader operable and works without JavaScript.
+ */
+.toggle__input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.toggle__pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 18px;
+  border-radius: var(--radius-pill);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.35;
+  color: var(--peppercorn);
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 120ms ease, color 120ms ease;
+}
+
+.toggle__input:checked + .toggle__pill {
+  background: var(--peppercorn);
+  color: var(--white);
+}
+
+.toggle__input:focus-visible + .toggle__pill {
+  outline: 2px solid var(--pumpkin);
+  outline-offset: 2px;
+}
+
+/*
+ * The toggle drives which series is visible. Both are always in the markup;
+ * only the presentation changes, so a crawler reads email and SMS either way.
+ */
+.card:has(.toggle__input[value="email"]:checked) [data-series="sms"],
+.card:has(.toggle__input[value="sms"]:checked) [data-series="email"] {
+  display: none;
+}
+
+/* ---------------------------------------------------------------- chart card */
+
+.card--chart {
+  background: var(--card-chart-bg);
+  padding: 34px 40px 40px;
+  max-width: 1280px;
+}
+
+.chart__scroll {
+  /*
+   * SVG text scales with the viewBox, so below roughly 900px the axis labels
+   * stop being legible. Scrolling beats shrinking them into illegibility.
+   */
+  overflow-x: auto;
+  margin-top: 32px;
+}
+
+.chart__plot {
+  display: block;
+  width: 100%;
+  min-width: 900px;
+  height: auto;
+  overflow: visible;
+}
+
+/*
+ * Set by enhance.js once it has measured a width it can read without scrolling.
+ * Lets the fixed-viewBox chart shrink to fit the column instead of overflowing.
+ * The trade-off is that the SVG text scales down with it; that ceiling is what
+ * separates this progressive-enhancement path from the measured React build.
+ */
+.card--chart-fit .chart__plot {
+  min-width: 0;
+}
+
+.chart__band-label {
+  font-size: 16px;
+  font-weight: 500;
+  fill: var(--pumpkin);
+}
+
+.chart__gridline line {
+  stroke: var(--rule);
+  stroke-width: 1;
+}
+
+.chart__gridline text {
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.28px;
+  fill: var(--peppercorn);
+}
+
+.chart__xaxis text {
+  font-size: 14px;
+  font-weight: 400;
+  fill: var(--peppercorn);
+}
+
+.chart__line {
+  fill: none;
+  stroke: var(--pumpkin);
+  stroke-width: 2;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.chart__dot {
+  fill: var(--pumpkin);
+}
+
+/* ---------------------------------------------------------------- stats card */
+
+.card--stats {
+  background: var(--card-stats-bg);
+  padding: 24px 30px;
+  max-width: 600px;
+  min-height: 466px;
+  display: flex;
+  flex-direction: column;
+}
+
+.card__title--stats {
+  max-width: 340px;
+}
+
+.stats {
+  margin: 39px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.stats__row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--peppercorn);
+}
+
+.stats__label {
+  font-size: 21px;
+  font-weight: 500;
+  line-height: 1.35;
+}
+
+.stats__value {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 400;
+  line-height: 1.35;
+  text-align: right;
+}
+
+.card__footer {
+  margin-top: auto;
+  padding-top: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.card__source {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.3;
+}
+
+.card__logo {
+  display: block;
+  width: 99px;
+  height: 28px;
+  flex-shrink: 0;
+}
+
+/* ---------------------------------------------------------------- tooltip */
+
+/* Created by enhance.js. Everything above works without it. */
+.chart__tooltip {
+  position: absolute;
+  z-index: 2;
+  pointer-events: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: var(--peppercorn);
+  color: var(--white);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 1.4;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translate(-50%, -100%);
+  transition: opacity 120ms ease;
+}
+
+.chart__tooltip[data-visible="true"] {
+  opacity: 1;
+}
+
+.chart__tooltip strong {
+  font-weight: 500;
+}
+
+.chart__dot {
+  transition: r 100ms ease;
+}
+
+.chart__dot[data-active="true"] {
+  r: 8;
+}
+
+.chart__dot:focus {
+  outline: none;
+}
+
+.chart__dot:focus-visible {
+  outline: 2px solid var(--peppercorn);
+  outline-offset: 2px;
+}
+
+/* ---------------------------------------------------------------- data table */
+
+.data-table {
+  margin-top: 32px;
+}
+
+.data-table table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  text-align: left;
+}
+
+.data-table caption {
+  text-align: left;
+  padding-bottom: 12px;
+  font-size: 13px;
+  line-height: 1.4;
+  color: rgba(35, 30, 21, 0.7);
+}
+
+.data-table th,
+.data-table td {
+  padding: 10px 20px 10px 0;
+  border-bottom: 1px solid var(--rule);
+  font-weight: 400;
+  vertical-align: baseline;
+}
+
+.data-table thead th {
+  font-weight: 500;
+  border-bottom-color: var(--peppercorn);
+}
+
+.data-table tbody th {
+  font-weight: 500;
+}
+
+.data-table td {
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.data-table thead th[data-series] {
+  text-align: right;
+}
+
+.data-table__note {
+  margin: 12px 0 0;
+  font-size: 12px;
+  line-height: 1.4;
+  color: rgba(35, 30, 21, 0.7);
+  max-width: 78ch;
+}
+
+.card--chart .card__footer {
+  margin-top: 28px;
+  padding-top: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chart__dot,
+  .chart__tooltip,
+  .toggle__pill {
+    transition: none;
+  }
+}
