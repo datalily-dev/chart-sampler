@@ -5,6 +5,7 @@
   "type": "module",
   "description": "The Flowerplot-stack (React + D3 + MUI) build of the sends-per-day chart, shipped as a client-rendered embed bundle.",
   "scripts": {
+    "dev": "vite",
     "build": "esbuild sends-per-day/main.jsx --bundle --format=iife --jsx=automatic --define:process.env.NODE_ENV=\\\"production\\\" --outfile=dist/sends-per-day-react.js",
     "watch": "npm run build -- --watch"
   },
@@ -17,6 +18,8 @@
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
-    "esbuild": "^0.24.0"
+    "@vitejs/plugin-react": "^6.0.5",
+    "esbuild": "^0.27.7",
+    "vite": "^8.2.1"
   }
 }

@@ -12,7 +12,7 @@
     "build:client": "npm --prefix client install && npm --prefix client run build",
     "build:all": "npm run build:client && node build.mjs",
     "derive": "node scripts/derive-series.mjs",
-    "dev": "npm run build && npm run serve",
+    "dev": "npm --prefix client install && npm --prefix client run dev",
     "serve": "node scripts/serve.mjs",
     "share": "npm run build:all && HOST=0.0.0.0 node scripts/serve.mjs",
     "crawl": "node scripts/crawler-view.mjs",

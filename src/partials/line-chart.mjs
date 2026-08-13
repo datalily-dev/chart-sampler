@@ -74,6 +74,17 @@ function seriesGroup({ id, seriesKey, series, data }) {
         data-holiday="${source.holiday ?? ''}"
       />`;
     })}
+    ${/* The figure above each dot, so the exact reading does not depend on hover. */ ''}
+    ${plotted.map(
+      (point) => html`<text
+        class="chart__value"
+        x="${point.x}"
+        y="${point.y - PLOT.valueLabelOffset}"
+        text-anchor="middle"
+      >
+        ${compact(point.value)}
+      </text>`,
+    )}
   </g>`;
 }
 

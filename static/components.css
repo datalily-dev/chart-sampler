@@ -175,6 +175,21 @@
   fill: var(--pumpkin);
 }
 
+/*
+ * The value that sits above each dot. It can land on the line or on the BFCM
+ * band, so it carries a stroke in the card colour, painted underneath the
+ * glyphs, as a halo that keeps it readable without a filled box behind it.
+ */
+.chart__value {
+  font-size: 13px;
+  font-weight: 500;
+  fill: var(--peppercorn);
+  paint-order: stroke;
+  stroke: var(--card-chart-bg);
+  stroke-width: 3px;
+  stroke-linejoin: round;
+}
+
 /* ---------------------------------------------------------------- stats card */
 
 .card--stats {

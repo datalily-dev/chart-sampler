@@ -9,10 +9,11 @@ those two you pick, but whether the numbers are in the HTML the server returns.
 
 ## Quick start
 
-No dependencies, no install step. Node 18 or newer.
+Node 18 or newer. `npm run dev` installs the React client once, then starts Vite with live reload.
 
 ```bash
-node build.mjs                  # writes dist/
+npm run dev                     # Vite at http://127.0.0.1:4321 (HMR for the React chart)
+node build.mjs                  # writes dist/ (no install)
 node scripts/serve.mjs          # serves dist/ at http://127.0.0.1:4321
 npm run share                   # build + serve on your LAN (HOST=0.0.0.0)
 node scripts/crawler-view.mjs   # the demo
@@ -101,6 +102,7 @@ server-rendered variant needs no install and ships nothing but its own markup, w
 
 The React variant is optional and isolated. `node build.mjs` still builds the rest of the site with
 no dependencies; run `npm run build:client` (or `npm run build:all`) to also produce the bundle.
+`npm run dev` is Vite, for live edits of the React chart; it does not replace that production path.
 
 ### Resizing on small screens
 
@@ -171,10 +173,10 @@ build.mjs               the entire build: reads data, writes dist/
 src/data/               the two JSON data files
 src/lib/                html templating, chart math, formatting, JSON-LD
 src/partials/           toggle, line chart, data table, the two cards
-src/pages/              index, compare, the three embed variants, iframe frames
+src/pages/              the React + D3 index, compare, the embed variants, iframe frames
 static/                 tokens.css, components.css, enhance.js, logo
 scripts/                derive-series, serve, crawler-view
-client/                 the React + D3 + MUI variant; bundles to sends-per-day-react.js
+client/                 the React + D3 + MUI variant; Vite for `npm run dev`, esbuild for the IIFE
 dist/                   generated; this is the handoff artifact
 ```
 

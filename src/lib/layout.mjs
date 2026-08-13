@@ -54,27 +54,6 @@ export function variantBanner({ name, verdict, tone, summary }) {
   </div>`;
 }
 
-/**
- * Page switcher between the React and React + D3 chart variants.
- * @param {'html' | 'react'} active
- */
-export function variantSwitch(active) {
-  return html`<nav class="variant-switch" aria-label="Chart implementation">
-    <a
-      class="variant-switch__pill${active === 'html' ? ' is-active' : ''}"
-      href="./"
-      ${active === 'html' ? html`aria-current="page"` : ''}
-      >React</a
-    >
-    <a
-      class="variant-switch__pill${active === 'react' ? ' is-active' : ''}"
-      href="react.html"
-      ${active === 'react' ? html`aria-current="page"` : ''}
-      >React + D3</a
-    >
-  </nav>`;
-}
-
 export function articleProse() {
   return html`<header class="article__header">
       <p class="article__eyebrow">${ARTICLE.eyebrow}</p>

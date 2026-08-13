@@ -29,12 +29,7 @@ export const PROBES = [
   { label: 'Mid-window daily figure', needle: '1,013,302,698' },
 ];
 
-const VARIANTS = [
-  { name: 'Server-rendered HTML', path: '/index.html' },
-  { name: 'Iframe embed', path: '/embed-iframe.html' },
-  { name: 'Client-rendered by script tag', path: '/embed-script-tag.html' },
-  { name: 'Client-rendered by React + D3', path: '/embed-react-d3.html' },
-];
+const VARIANTS = [{ name: 'Client-rendered by React + D3', path: '/index.html' }];
 
 // GPTBot's real user agent string, so the request is honest about what it is.
 const USER_AGENT =
@@ -84,13 +79,8 @@ function report(rows) {
     console.log(`  ${score(row)} of ${PROBES.length} present\n`);
   }
 
-  const embedded = rows.filter((row) => row.path !== '/index.html');
   console.log(
-    `Every figure is present in the server-rendered page. ` +
-      embedded
-        .map((row) => `"${row.name}" exposes ${score(row)} of ${PROBES.length}`)
-        .join(', ') +
-      '.\n',
+    rows.map((row) => `"${row.name}" exposes ${score(row)} of ${PROBES.length}`).join(', ') + '.\n',
   );
 }
 

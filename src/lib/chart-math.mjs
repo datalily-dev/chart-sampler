@@ -28,6 +28,8 @@ export const PLOT = {
   /** The Black Friday to Cyber Monday highlight band, measured from Figma. */
   band: { x: 503, y: -56, width: 323, height: 520, labelX: 664, labelY: -24 },
   dotRadius: 5.5,
+  /** How far the per-point value label sits above its dot. */
+  valueLabelOffset: 14,
 };
 
 export function xFor(index, count) {

@@ -21,7 +21,6 @@ import { line as d3Line } from 'd3-shape';
 
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import Tooltip from '@mui/material/Tooltip';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
@@ -29,6 +28,7 @@ import { compact, longDate, shortDate, withCommas } from './format.js';
 
 const PUMPKIN = '#ff7346';
 const PEPPERCORN = '#231e15';
+const WHITE = '#ffffff';
 const RULE = 'rgba(35, 30, 21, 0.15)';
 const BAND_PINK = '#ffccd8';
 const FONT_STACK =
@@ -95,7 +95,54 @@ export default function SendsPerDayChart({ data }) {
   };
   const labelStep = narrow ? 4 : 2;
   const dotRadius = narrow ? 4 : 5.5;
+  const hoverRadius = narrow ? 6 : 8;
   const tickFont = narrow ? 11 : 14;
+  const valueFont = narrow ? 10 : width < 900 ? 11.5 : 13;
+
+  /*
+   * The per-point value labels are the one thing here that can genuinely
+   * collide, so their density is derived from how wide they actually are rather
+   * than from a guessed breakpoint. Measured in the browser, a label renders at
+   * about 0.64em per character in this font ("981M" is 33.3px at 13px), so the
+   * widest label the current series can produce plus a little breathing room is
+   * what one column has to clear.
+   *
+   * When a single row of labels no longer fits, they take a second row below
+   * the line before any of them are dropped. Two rows double the horizontal
+   * room each label has, which is what keeps all 19 figures on the chart down
+   * to a phone-width card. Only below that does the step open up to every other
+   * point, and then every fourth; whatever is dropped is still on the tooltip
+   * and in the data table.
+   */
+  const gap =
+    data.points.length > 1
+      ? Math.max(0, width - margin.left - margin.right) / (data.points.length - 1)
+      : width;
+  const longestValue = useMemo(
+    () => Math.max(...data.points.map((point) => compact(point[active]).length)),
+    [data.points, active],
+  );
+  const valueWidth = longestValue * 0.64 * valueFont + 6;
+  const twoRows = gap < valueWidth;
+  const valueStep =
+    [1, 2, 4].find((step) => step * gap * (twoRows ? 2 : 1) >= valueWidth) ?? 4;
+
+  // Hover/focus tooltip, ported from the CSS + enhance.js pair the static chart
+  // used: `hovered` drives the dot swell and the fade-in, `shown` keeps the last
+  // hovered point on screen so the tooltip fades out in place rather than
+  // snapping to the origin.
+  const [hovered, setHovered] = useState(null);
+  const [shown, setShown] = useState(null);
+
+  const [tableOpen, setTableOpen] = useState(false);
+
+  const enterDot = (index) => {
+    setHovered(index);
+    setShown(index);
+  };
+  const leaveDot = (index) => {
+    setHovered((current) => (current === index ? null : current));
+  };
 
   const xScale = useMemo(
     () =>
@@ -118,6 +165,77 @@ export default function SendsPerDayChart({ data }) {
   }, [xScale, yScale, active, data.points]);
 
   const band = useMemo(() => bandRange(data.points), [data.points]);
+
+  /*
+   * Placing the labels, once the density is settled.
+   *
+   * Alternating above/below on a strict odd/even rule is not enough on its own,
+   * because the offsets follow the line: where the line climbs steeply, the
+   * label hanging under a high point lands at the same height as the label
+   * sitting over the next one. So the labels are placed left to right against
+   * the boxes already on the chart, each one taking the first position that is
+   * clear — above the dot, below it, then a row further out on either side. A
+   * label with nowhere to go is dropped rather than allowed to overlap, which
+   * in practice only happens on the narrowest cards.
+   *
+   * The y-axis ticks go in as fixed obstacles, because the first point sits
+   * directly against that column and would otherwise print on top of one.
+   */
+  const valueLabels = useMemo(() => {
+    if (!width) return [];
+    const lineHeight = valueFont + 3;
+    const ceiling = margin.top - 4;
+    const floor = height - margin.bottom - 4;
+    const placed = series.axisTicks.map((tick) => {
+      const tickWidth = compact(tick).length * 0.64 * tickFont + 6;
+      return { x: margin.left - 10 - tickWidth / 2, y: yScale(tick), half: tickWidth / 2 };
+    });
+    const labels = [];
+
+    for (let i = 0; i < data.points.length; i += valueStep) {
+      const point = data.points[i];
+      const text = compact(point[active]);
+      const half = (text.length * 0.64 * valueFont + 6) / 2;
+      const x = xScale(i);
+      const y = yScale(point[active]);
+      const above = y - dotRadius - 8;
+      const below = y + dotRadius + valueFont + 2;
+      const options = twoRows
+        ? [above, below, above - lineHeight, below + lineHeight]
+        : [above];
+
+      // Only the labels still within a label's width can overlap this one.
+      const neighbours = placed.filter((label) => label.x + label.half > x - half);
+      const spot = options.find(
+        (candidate) =>
+          candidate >= ceiling &&
+          candidate <= floor &&
+          neighbours.every((label) => Math.abs(label.y - candidate) >= lineHeight),
+      );
+      if (spot === undefined) continue;
+      const label = { key: point.date, text, x, y: spot, half };
+      placed.push(label);
+      labels.push(label);
+    }
+
+    return labels;
+  }, [
+    width,
+    active,
+    data.points,
+    series.axisTicks,
+    valueStep,
+    twoRows,
+    valueFont,
+    tickFont,
+    dotRadius,
+    height,
+    margin.top,
+    margin.bottom,
+    margin.left,
+    xScale,
+    yScale,
+  ]);
   const lineRef = useRef(null);
 
   // The draw-in animation, matched to static/enhance.js: measure the path, dash
@@ -183,7 +301,12 @@ export default function SendsPerDayChart({ data }) {
         <ToggleButtonGroup
           exclusive
           value={active}
-          onChange={(_, next) => next && setActive(next)}
+          onChange={(_, next) => {
+            if (!next) return;
+            setActive(next);
+            setHovered(null);
+            setShown(null);
+          }}
           aria-label="Choose a channel"
           sx={{
             bgcolor: '#ffffff',
@@ -218,7 +341,7 @@ export default function SendsPerDayChart({ data }) {
         </ToggleButtonGroup>
       </Box>
 
-      <Box ref={containerRef} sx={{ mt: 4, width: '100%' }}>
+      <Box ref={containerRef} sx={{ mt: 4, width: '100%', position: 'relative' }}>
         {width > 0 ? (
           <svg
             width={width}
@@ -307,22 +430,54 @@ export default function SendsPerDayChart({ data }) {
               strokeLinecap="round"
             />
 
-            {data.points.map((point, i) => {
-              const holiday = point.holiday ? ` \u00b7 ${point.holiday}` : '';
-              const title = `${withCommas(point[active])} ${series.unit}\n${longDate(point.date)}${holiday}`;
-              return (
-                <Tooltip key={point.date} title={title} arrow describeChild>
-                  <circle
-                    cx={xScale(i)}
-                    cy={yScale(point[active])}
-                    r={dotRadius}
-                    fill={PUMPKIN}
-                    tabIndex={0}
-                    style={{ cursor: 'pointer', outline: 'none' }}
-                  />
-                </Tooltip>
-              );
-            })}
+            {data.points.map((point, i) => (
+              <Box
+                component="circle"
+                key={point.date}
+                cx={xScale(i)}
+                cy={yScale(point[active])}
+                r={hovered === i ? hoverRadius : dotRadius}
+                fill={PUMPKIN}
+                tabIndex={0}
+                onMouseEnter={() => enterDot(i)}
+                onMouseLeave={() => leaveDot(i)}
+                onFocus={() => enterDot(i)}
+                onBlur={() => leaveDot(i)}
+                sx={{
+                  cursor: 'pointer',
+                  transition: 'r 100ms ease',
+                  '&:focus': { outline: 'none' },
+                  '&:focus-visible': {
+                    outline: `2px solid ${PEPPERCORN}`,
+                    outlineOffset: '2px',
+                  },
+                  '@media (prefers-reduced-motion: reduce)': { transition: 'none' },
+                }}
+              />
+            ))}
+
+            {valueLabels.map((label) => (
+              <text
+                key={label.key}
+                x={label.x}
+                y={label.y}
+                textAnchor="middle"
+                style={{
+                  fontSize: valueFont,
+                  fontWeight: 500,
+                  fill: PEPPERCORN,
+                  // Halo in the card colour, painted under the glyphs, so the
+                  // label stays readable where it crosses the line or band.
+                  paintOrder: 'stroke',
+                  stroke: '#fef6f7',
+                  strokeWidth: 3,
+                  strokeLinejoin: 'round',
+                  pointerEvents: 'none',
+                }}
+              >
+                {label.text}
+              </text>
+            ))}
 
             {data.points.map((point, i) =>
               i % labelStep === 0 ? (
@@ -341,81 +496,178 @@ export default function SendsPerDayChart({ data }) {
         ) : (
           <Box sx={{ height }} aria-hidden="true" />
         )}
-      </Box>
 
-      <Box
-        className="data-table"
-        sx={{
-          mt: '32px',
-          '& table': {
-            width: '100%',
-            borderCollapse: 'collapse',
-            fontSize: 14,
-            textAlign: 'left',
-            fontFamily: FONT_STACK,
-          },
-          '& caption': {
-            textAlign: 'left',
-            paddingBottom: '12px',
-            fontSize: 13,
-            lineHeight: 1.4,
-            color: 'rgba(35, 30, 21, 0.7)',
-          },
-          '& th, & td': {
-            padding: '10px 20px 10px 0',
-            borderBottom: `1px solid ${RULE}`,
-            fontWeight: 400,
-            verticalAlign: 'baseline',
-          },
-          '& thead th': {
-            fontWeight: 500,
-            borderBottomColor: PEPPERCORN,
-          },
-          '& tbody th': { fontWeight: 500 },
-          '& td': {
-            fontVariantNumeric: 'tabular-nums',
-            textAlign: 'right',
-          },
-          '& thead th:last-child': { textAlign: 'right' },
-        }}
-      >
-        <Box component="table">
-          <caption>
-            {data.title}, {data.range}
-          </caption>
-          <thead>
-            <tr>
-              <th scope="col">Date</th>
-              <th scope="col">{series.label}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data.points.map((point) => (
-              <tr key={point.date}>
-                <th scope="row">{longDate(point.date)}</th>
-                <td>
-                  {withCommas(point[active])}
-                  {point.derived ? '*' : ''}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </Box>
-        {data.note ? (
-          <Typography
+        {shown !== null && data.points[shown] ? (
+          <Box
+            role="presentation"
             sx={{
-              mt: '12px',
-              mb: 0,
+              position: 'absolute',
+              zIndex: 2,
+              pointerEvents: 'none',
+              padding: '8px 12px',
+              borderRadius: '8px',
+              bgcolor: PEPPERCORN,
+              color: WHITE,
               fontFamily: FONT_STACK,
-              fontSize: 12,
+              fontSize: 13,
               lineHeight: 1.4,
-              color: 'rgba(35, 30, 21, 0.7)',
-              maxWidth: '78ch',
+              whiteSpace: 'nowrap',
+              transform: 'translate(-50%, -100%)',
+              transition: 'opacity 120ms ease',
+              '@media (prefers-reduced-motion: reduce)': { transition: 'none' },
+            }}
+            style={{
+              left: xScale(shown),
+              top: yScale(data.points[shown][active]) - hoverRadius - 10,
+              opacity: hovered === null ? 0 : 1,
             }}
           >
-            <span aria-hidden="true">*</span> {data.note}
-          </Typography>
+            <strong style={{ fontWeight: 500 }}>
+              {withCommas(data.points[shown][active])}
+            </strong>{' '}
+            {series.unit}
+            <br />
+            <span>
+              {longDate(data.points[shown].date)}
+              {data.points[shown].holiday ? ` · ${data.points[shown].holiday}` : ''}
+            </span>
+          </Box>
         ) : null}
+      </Box>
+
+      {/*
+        The table is 19 rows and more than half the card's height, so it opens on
+        demand. A native <details> keeps every figure in the DOM whether it is
+        open or shut, which is what keeps the table readable to a screen reader
+        (and to anything else parsing the mounted page) without costing the
+        vertical space.
+      */}
+      <Box
+        component="details"
+        open={tableOpen}
+        onToggle={(event) => setTableOpen(event.currentTarget.open)}
+        sx={{ mt: '32px' }}
+      >
+        <Box
+          component="summary"
+          sx={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '8px',
+            padding: '8px 18px',
+            listStyle: 'none',
+            borderRadius: '100px',
+            border: '1px solid #bcbbb9',
+            bgcolor: '#ffffff',
+            fontFamily: FONT_STACK,
+            fontSize: 13,
+            fontWeight: 500,
+            lineHeight: 1.35,
+            color: PEPPERCORN,
+            cursor: 'pointer',
+            userSelect: 'none',
+            '&::-webkit-details-marker': { display: 'none' },
+            '&:focus': { outline: 'none' },
+            '&:focus-visible': { outline: `2px solid ${PUMPKIN}`, outlineOffset: '2px' },
+          }}
+        >
+          {tableOpen ? 'Hide' : 'Show'} data table ({data.points.length} days)
+          <Box
+            component="svg"
+            viewBox="0 0 12 8"
+            aria-hidden="true"
+            sx={{
+              width: 12,
+              height: 8,
+              flexShrink: 0,
+              fill: 'none',
+              stroke: PEPPERCORN,
+              strokeWidth: 1.5,
+              strokeLinecap: 'round',
+              strokeLinejoin: 'round',
+              transform: tableOpen ? 'rotate(180deg)' : 'none',
+              transition: 'transform 120ms ease',
+              '@media (prefers-reduced-motion: reduce)': { transition: 'none' },
+            }}
+          >
+            <path d="M1 1.5 6 6.5 11 1.5" />
+          </Box>
+        </Box>
+
+        <Box
+          className="data-table"
+          sx={{
+            mt: '20px',
+            '& table': {
+              width: '100%',
+              borderCollapse: 'collapse',
+              fontSize: 14,
+              textAlign: 'left',
+              fontFamily: FONT_STACK,
+            },
+            '& caption': {
+              textAlign: 'left',
+              paddingBottom: '12px',
+              fontSize: 13,
+              lineHeight: 1.4,
+              color: 'rgba(35, 30, 21, 0.7)',
+            },
+            '& th, & td': {
+              padding: '10px 20px 10px 0',
+              borderBottom: `1px solid ${RULE}`,
+              fontWeight: 400,
+              verticalAlign: 'baseline',
+            },
+            '& thead th': {
+              fontWeight: 500,
+              borderBottomColor: PEPPERCORN,
+            },
+            '& tbody th': { fontWeight: 500 },
+            '& td': {
+              fontVariantNumeric: 'tabular-nums',
+              textAlign: 'right',
+            },
+            '& thead th:last-child': { textAlign: 'right' },
+          }}
+        >
+          <Box component="table">
+            <caption>
+              {data.title}, {data.range}
+            </caption>
+            <thead>
+              <tr>
+                <th scope="col">Date</th>
+                <th scope="col">{series.label}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data.points.map((point) => (
+                <tr key={point.date}>
+                  <th scope="row">{longDate(point.date)}</th>
+                  <td>
+                    {withCommas(point[active])}
+                    {point.derived ? '*' : ''}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Box>
+          {data.note ? (
+            <Typography
+              sx={{
+                mt: '12px',
+                mb: 0,
+                fontFamily: FONT_STACK,
+                fontSize: 12,
+                lineHeight: 1.4,
+                color: 'rgba(35, 30, 21, 0.7)',
+                maxWidth: '78ch',
+              }}
+            >
+              <span aria-hidden="true">*</span> {data.note}
+            </Typography>
+          ) : null}
+        </Box>
       </Box>
 
       <Box
