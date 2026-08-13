@@ -1,7 +1,7 @@
 {
-  "title": "Sent per day during BFCM 2025",
+  "title": "Messages sent per day during BFCM 2025",
   "range": "November 20 - December 8",
-  "source": "2026 Peak Season Marketing Report",
+  "source": "Breaking Through Peak Season Noise Report, September 2026",
   "note": "Points flagged \"derived\": true were recovered from the Figma chart geometry because no published daily figure exists for that date. Replace them if exact numbers become available.",
   "series": {
     "email": {

@@ -5,6 +5,7 @@
 
 import { createRoot } from 'react-dom/client';
 import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 
 import SendsPerDayChart from './SendsPerDayChart.jsx';
 import PeakStatsCard from './PeakStatsCard.jsx';
@@ -15,7 +16,36 @@ import peakStats from '../../src/data/peak-season-stats.json';
 function App() {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: '40px' }}>
-      <SendsPerDayChart data={dailySends} />
+      <Box>
+        <Typography
+          sx={{
+            m: '0 0 12px',
+            fontFamily:
+              '"Graphik Mailchimp App", "Helvetica Neue", Helvetica, Arial, sans-serif',
+            fontSize: 14,
+            fontWeight: 500,
+            color: '#231E15',
+          }}
+        >
+          Cream option
+        </Typography>
+        <SendsPerDayChart data={dailySends} palette="cream" />
+      </Box>
+      <Box>
+        <Typography
+          sx={{
+            m: '0 0 12px',
+            fontFamily:
+              '"Graphik Mailchimp App", "Helvetica Neue", Helvetica, Arial, sans-serif',
+            fontSize: 14,
+            fontWeight: 500,
+            color: '#231E15',
+          }}
+        >
+          Pink option
+        </Typography>
+        <SendsPerDayChart data={dailySends} palette="pink" />
+      </Box>
       <PeakStatsCard stats={peakStats} />
     </Box>
   );
