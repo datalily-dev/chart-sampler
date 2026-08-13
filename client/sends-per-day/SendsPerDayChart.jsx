@@ -111,8 +111,7 @@ export default function SendsPerDayChart({ data }) {
    * the line before any of them are dropped. Two rows double the horizontal
    * room each label has, which is what keeps all 19 figures on the chart down
    * to a phone-width card. Only below that does the step open up to every other
-   * point, and then every fourth; whatever is dropped is still on the tooltip
-   * and in the data table.
+   * point, and then every fourth; whatever is dropped is still on the tooltip.
    */
   const gap =
     data.points.length > 1
@@ -133,8 +132,6 @@ export default function SendsPerDayChart({ data }) {
   // snapping to the origin.
   const [hovered, setHovered] = useState(null);
   const [shown, setShown] = useState(null);
-
-  const [tableOpen, setTableOpen] = useState(false);
 
   const enterDot = (index) => {
     setHovered(index);
@@ -533,141 +530,6 @@ export default function SendsPerDayChart({ data }) {
             </span>
           </Box>
         ) : null}
-      </Box>
-
-      {/*
-        The table is 19 rows and more than half the card's height, so it opens on
-        demand. A native <details> keeps every figure in the DOM whether it is
-        open or shut, which is what keeps the table readable to a screen reader
-        (and to anything else parsing the mounted page) without costing the
-        vertical space.
-      */}
-      <Box
-        component="details"
-        open={tableOpen}
-        onToggle={(event) => setTableOpen(event.currentTarget.open)}
-        sx={{ mt: '32px' }}
-      >
-        <Box
-          component="summary"
-          sx={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '8px',
-            padding: '8px 18px',
-            listStyle: 'none',
-            borderRadius: '100px',
-            border: '1px solid #bcbbb9',
-            bgcolor: '#ffffff',
-            fontFamily: FONT_STACK,
-            fontSize: 13,
-            fontWeight: 500,
-            lineHeight: 1.35,
-            color: PEPPERCORN,
-            cursor: 'pointer',
-            userSelect: 'none',
-            '&::-webkit-details-marker': { display: 'none' },
-            '&:focus': { outline: 'none' },
-            '&:focus-visible': { outline: `2px solid ${PUMPKIN}`, outlineOffset: '2px' },
-          }}
-        >
-          {tableOpen ? 'Hide' : 'Show'} data table ({data.points.length} days)
-          <Box
-            component="svg"
-            viewBox="0 0 12 8"
-            aria-hidden="true"
-            sx={{
-              width: 12,
-              height: 8,
-              flexShrink: 0,
-              fill: 'none',
-              stroke: PEPPERCORN,
-              strokeWidth: 1.5,
-              strokeLinecap: 'round',
-              strokeLinejoin: 'round',
-              transform: tableOpen ? 'rotate(180deg)' : 'none',
-              transition: 'transform 120ms ease',
-              '@media (prefers-reduced-motion: reduce)': { transition: 'none' },
-            }}
-          >
-            <path d="M1 1.5 6 6.5 11 1.5" />
-          </Box>
-        </Box>
-
-        <Box
-          className="data-table"
-          sx={{
-            mt: '20px',
-            '& table': {
-              width: '100%',
-              borderCollapse: 'collapse',
-              fontSize: 14,
-              textAlign: 'left',
-              fontFamily: FONT_STACK,
-            },
-            '& caption': {
-              textAlign: 'left',
-              paddingBottom: '12px',
-              fontSize: 13,
-              lineHeight: 1.4,
-              color: 'rgba(35, 30, 21, 0.7)',
-            },
-            '& th, & td': {
-              padding: '10px 20px 10px 0',
-              borderBottom: `1px solid ${RULE}`,
-              fontWeight: 400,
-              verticalAlign: 'baseline',
-            },
-            '& thead th': {
-              fontWeight: 500,
-              borderBottomColor: PEPPERCORN,
-            },
-            '& tbody th': { fontWeight: 500 },
-            '& td': {
-              fontVariantNumeric: 'tabular-nums',
-              textAlign: 'right',
-            },
-            '& thead th:last-child': { textAlign: 'right' },
-          }}
-        >
-          <Box component="table">
-            <caption>
-              {data.title}, {data.range}
-            </caption>
-            <thead>
-              <tr>
-                <th scope="col">Date</th>
-                <th scope="col">{series.label}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {data.points.map((point) => (
-                <tr key={point.date}>
-                  <th scope="row">{longDate(point.date)}</th>
-                  <td>
-                    {withCommas(point[active])}
-                    {point.derived ? '*' : ''}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </Box>
-          {data.note ? (
-            <Typography
-              sx={{
-                mt: '12px',
-                mb: 0,
-                fontFamily: FONT_STACK,
-                fontSize: 12,
-                lineHeight: 1.4,
-                color: 'rgba(35, 30, 21, 0.7)',
-                maxWidth: '78ch',
-              }}
-            >
-              <span aria-hidden="true">*</span> {data.note}
-            </Typography>
-          ) : null}
-        </Box>
       </Box>
 
       <Box
