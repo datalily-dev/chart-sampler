@@ -52,90 +52,127 @@ export const TACTICS = {
         crop: '37% 34%',
       },
       eyebrow: 'Emails using generative AI during BFCM had:',
-      stat: '43% higher average conversion rates',
+      // Non-breaking space: the stat wraps after "average" rather than orphaning "rates".
+      stat: '43% higher average conversion\u00a0rates',
     },
   ],
 };
+
+const TICKER_LABEL = 'How brands can break through';
+
+/** One ticker unit: label + star separator. Repeated to fill the marquee. */
+function tickerItem() {
+  return html`<span class="tactics__ticker-item">
+    <span class="tactics__ticker-text">${TICKER_LABEL}</span>
+    <img class="tactics__ticker-star" src="img/star.svg" alt="" width="16" height="16" />
+  </span>`;
+}
+
+/** Enough copies that one group is wider than the viewport at typical sizes. */
+function tickerGroup() {
+  return html`<div class="tactics__ticker-group">
+    ${Array.from({ length: 8 }, () => tickerItem())}
+  </div>`;
+}
 
 export function tacticsSection({ content = TACTICS, id = 'tactics' } = {}) {
   const headingId = `${id}-heading`;
   const { slides } = content;
 
   return html`<section class="tactics" id="${id}" aria-labelledby="${headingId}">
-    <div class="tactics__panel">
-      <div class="tactics__content">
-        <h2 class="tactics__heading" id="${headingId}">${content.heading}</h2>
-
-        <div class="tactics__intro">
-          <p>${content.intro}</p>
-          <p class="tactics__lead-in">${content.leadIn}</p>
-        </div>
-
-        <ul class="tactics__list">
-          ${content.items.map(
-            (item) => html`<li class="tactics__item">
-              <img class="tactics__check" src="img/check-circle.svg" alt="" width="28" height="28" />
-              <p class="tactics__item-text">${item}</p>
-            </li>`,
-          )}
-        </ul>
+    <!--
+      Decorative marquee. Duplicate groups let the track translate -50% for a
+      seamless loop; aria-hidden keeps the repeating slogan out of the a11y tree.
+    -->
+    <div class="tactics__ticker" aria-hidden="true">
+      <div class="tactics__ticker-track">
+        ${tickerGroup()}
+        ${tickerGroup()}
       </div>
     </div>
 
-    <!--
-      Every slide ships in the markup and the first one is marked active here, so
-      with scripts blocked this renders as the static callout the report falls
-      back to. carousel.js takes over from that state; the arrows stay hidden
-      until it does, rather than sitting there as controls that do nothing.
-    -->
-    <div
-      class="tactics__media"
-      data-tactics-carousel
-      role="group"
-      aria-roledescription="carousel"
-      aria-label="Generative AI performance during BFCM"
-    >
-      <div class="tactics__figure">
-        ${slides.map(
-          (slide, index) => html`<div
-            class="tactics__photo"
-            data-slide="${index}"
-            data-active="${index === 0 ? 'true' : 'false'}"
-            style="--tactics-crop: ${slide.photo.crop}"
-          >
-            <img src="${slide.photo.src}" alt="${slide.photo.alt}" width="680" height="436" />
-          </div>`,
-        )}
-      </div>
+    <div class="tactics__row">
+      <div class="tactics__panel">
+        <div class="tactics__content">
+          <h2 class="tactics__heading" id="${headingId}">${content.heading}</h2>
 
-      <div class="tactics__callout">
-        <div class="tactics__callout-inner">
-          <div class="tactics__stats" aria-live="polite">
-            ${slides.map(
-              // Explicit strings: the html tag renders a false value as "".
-              (slide, index) => html`<div
-                class="tactics__slide-text"
-                data-slide="${index}"
-                data-active="${index === 0 ? 'true' : 'false'}"
-              >
-                <p class="tactics__eyebrow">${slide.eyebrow}</p>
-                <p class="tactics__stat">${slide.stat}</p>
-              </div>`,
-            )}
+          <div class="tactics__intro">
+            <p>${content.intro}</p>
+            <p class="tactics__lead-in">${content.leadIn}</p>
           </div>
 
-          <div class="tactics__arrows">
-            <button
-              class="tactics__arrow tactics__arrow--prev"
-              type="button"
-              data-tactics-prev
-              aria-label="Previous stat"
+          <ul class="tactics__list">
+            ${content.items.map(
+              (item) => html`<li class="tactics__item">
+                <img
+                  class="tactics__check"
+                  src="img/check-circle.svg"
+                  alt=""
+                  width="28"
+                  height="28"
+                />
+                <p class="tactics__item-text">${item}</p>
+              </li>`,
+            )}
+          </ul>
+        </div>
+      </div>
+
+      <!--
+        Every slide ships in the markup and the first one is marked active here, so
+        with scripts blocked this renders as the static callout the report falls
+        back to. carousel.js takes over from that state; the arrows stay hidden
+        until it does, rather than sitting there as controls that do nothing.
+      -->
+      <div
+        class="tactics__media"
+        data-tactics-carousel
+        role="group"
+        aria-roledescription="carousel"
+        aria-label="Generative AI performance during BFCM"
+      >
+        <div class="tactics__figure">
+          ${slides.map(
+            (slide, index) => html`<div
+              class="tactics__photo"
+              data-slide="${index}"
+              data-active="${index === 0 ? 'true' : 'false'}"
+              style="--tactics-crop: ${slide.photo.crop}"
             >
-              <img src="img/arrow-circle.svg" alt="" width="43" height="43" />
-            </button>
-            <button class="tactics__arrow" type="button" data-tactics-next aria-label="Next stat">
-              <img src="img/arrow-circle-filled.svg" alt="" width="43" height="43" />
-            </button>
+              <img src="${slide.photo.src}" alt="${slide.photo.alt}" width="680" height="436" />
+            </div>`,
+          )}
+        </div>
+
+        <div class="tactics__callout">
+          <div class="tactics__callout-inner">
+            <div class="tactics__stats" aria-live="polite">
+              ${slides.map(
+                // Explicit strings: the html tag renders a false value as "".
+                (slide, index) => html`<div
+                  class="tactics__slide-text"
+                  data-slide="${index}"
+                  data-active="${index === 0 ? 'true' : 'false'}"
+                >
+                  <p class="tactics__eyebrow">${slide.eyebrow}</p>
+                  <p class="tactics__stat">${slide.stat}</p>
+                </div>`,
+              )}
+            </div>
+
+            <div class="tactics__arrows">
+              <button
+                class="tactics__arrow tactics__arrow--prev"
+                type="button"
+                data-tactics-prev
+                aria-label="Previous stat"
+              >
+                <img src="img/arrow-circle.svg" alt="" width="43" height="43" />
+              </button>
+              <button class="tactics__arrow" type="button" data-tactics-next aria-label="Next stat">
+                <img src="img/arrow-circle-filled.svg" alt="" width="43" height="43" />
+              </button>
+            </div>
           </div>
         </div>
       </div>

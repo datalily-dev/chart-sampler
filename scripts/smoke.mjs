@@ -28,7 +28,7 @@ const CHECKS = [
    */
   { label: 'Carousel slide 1 stat', needle: '26% more revenue per send' },
   { label: 'Carousel slide 2 stat', needle: '38% higher average order rate' },
-  { label: 'Carousel slide 3 stat', needle: '43% higher average conversion rates' },
+  { label: 'Carousel slide 3 stat', needle: '43% higher average conversion\u00a0rates' },
 ];
 
 const missing = CHECKS.filter((check) => !body.includes(check.needle));

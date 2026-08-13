@@ -44,6 +44,8 @@
     if (photos.length < 2 || !previous || !next) return;
 
     var index = 0;
+    // The single pending hold timer, so a superseded one can be cancelled.
+    var hold = null;
 
     root.classList.add('tactics__media--live');
 
@@ -125,14 +127,29 @@
      * it until the incoming one has finished travelling. Waiting out the whole
      * slide rather than the moment coverage is reached costs nothing — the photo
      * is hidden underneath the incoming one well before then — and it avoids
-     * pinning this to a fraction of an easing curve. If a fast second click made
-     * this photo active again meanwhile, data-active keeps it on screen anyway.
+     * pinning this to a fraction of an easing curve.
+     *
+     * Exactly one photo is ever held. Losing the entering class snaps the
+     * outgoing photo back to its resting position, so it alone covers the ground
+     * the incoming one has not travelled over yet, and any photo left over from
+     * an earlier click is redundant.
+     *
+     * Cancelling the previous timer is what makes clicking faster than the slide
+     * safe. Each timer only knows the photo it was given, so a stale one would
+     * come due mid-slide and drop the photo doing the covering, opening a gap on
+     * to whatever was behind it.
      */
     function keepUntilDone(photo, slideMs) {
+      window.clearTimeout(hold);
+
+      for (var i = 0; i < photos.length; i += 1) {
+        if (photos[i] !== photo) photos[i].classList.remove(LEAVING);
+      }
+
       photo.classList.add(LEAVING);
 
-      window.setTimeout(function () {
-        if (!photo.classList.contains(ENTERING)) photo.classList.remove(LEAVING);
+      hold = window.setTimeout(function () {
+        photo.classList.remove(LEAVING);
       }, slideMs + SETTLE_MS);
     }
   }

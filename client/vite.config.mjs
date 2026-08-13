@@ -43,7 +43,11 @@ function chartPage() {
     },
     handleHotUpdate({ file, server }) {
       const path = normalizePath(file);
-      if (path.includes('/src/pages/') || path.includes('/src/lib/')) {
+      if (
+        path.includes('/src/pages/') ||
+        path.includes('/src/lib/') ||
+        path.includes('/src/partials/')
+      ) {
         server.ws.send({ type: 'full-reload', path: '/' });
         return [];
       }

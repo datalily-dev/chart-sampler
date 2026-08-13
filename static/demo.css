@@ -31,6 +31,19 @@ body.bare .page {
   gap: 40px;
 }
 
+/*
+ * The tactics section is full bleed in the report, so it escapes both the
+ * page's side padding and its centred column: the negative margins widen it
+ * back out to the viewport from wherever the column's edges are.
+ *
+ * width: auto is what makes that work. The section sets width: 100%, which
+ * would hold it at the column's width and just shift it left instead.
+ */
+.page > .tactics {
+  width: auto;
+  margin-inline: calc(50% - 50vw);
+}
+
 /* ---------------------------------------------------------------- variant switch */
 
 .variant-switch {

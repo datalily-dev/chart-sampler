@@ -378,30 +378,18 @@
   }
 }
 
-/* ---------------------------------------------------------------- report sections */
-
-/*
- * The tactics section and the related reading bar are flush in the design, so
- * they share a wrapper rather than inheriting the page's column gap.
- */
-.report-sections {
-  display: flex;
-  flex-direction: column;
-}
-
 /* ---------------------------------------------------------------- tactics */
 
 /*
- * Two columns at the design's 760:680 ratio. The report runs this full bleed at
- * 1440; here it is capped to the same 1280 as .card--chart so its edges line up
- * with the chart above it.
+ * Ticker on top, then two columns at the design's 760:680 ratio, run full bleed
+ * the way the report does at 1440. There is no max-width: the section takes
+ * whatever width the page gives it, so the host page decides where its edges land.
  */
 .tactics {
   box-sizing: border-box;
   display: flex;
-  align-items: stretch;
+  flex-direction: column;
   width: 100%;
-  max-width: 1280px;
   font-family: var(--font-sans);
   color: var(--peppercorn);
 }
@@ -412,11 +400,77 @@
   box-sizing: border-box;
 }
 
+/* ---------------------------------------------------------------- ticker */
+
+.tactics__ticker {
+  overflow: hidden;
+  background: var(--cavendish);
+  padding-block: 10px;
+}
+
+.tactics__ticker-track {
+  display: flex;
+  width: max-content;
+  animation: tactics-ticker 46s linear infinite;
+}
+
+.tactics__ticker-group {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+}
+
+.tactics__ticker-item {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+}
+
+.tactics__ticker-text {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--peppercorn);
+}
+
+.tactics__ticker-star {
+  display: block;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  margin-inline: 14px;
+}
+
+@keyframes tactics-ticker {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tactics__ticker-track {
+    animation: none;
+  }
+}
+
 /*
  * Percentage bases rather than grow factors: the figure's aspect-ratio below
  * gives the media column an intrinsic width, which grow factors would fold
  * into the split and skew it off 760:680.
  */
+.tactics__row {
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+}
+
 .tactics__panel {
   flex: 0 1 52.7778%;
   min-width: 0;
@@ -569,24 +623,32 @@
 }
 
 /*
- * Only the active slide's text is in flow, so the callout takes its height from
- * the copy it is actually showing. That is what lets the two-line stat push the
- * panel taller and the figure give the space back, the way the design's 436 and
- * 398 photo heights do.
+ * All three slides are stacked in a single grid cell, so the callout is always
+ * as tall as the longest stat and the section keeps one height for the whole
+ * carousel. Swapping them in and out of flow instead would let the two-line
+ * stat push the panel taller than the one-line ones.
  */
 .tactics__stats {
   flex: 1 1 auto;
   min-width: 0;
+  display: grid;
 }
 
+/*
+ * Hidden with visibility rather than display, which is what keeps each slide's
+ * height in the cell. It still takes them out of the accessibility tree, so the
+ * live region announces only the stat on screen.
+ */
 .tactics__slide-text {
-  display: none;
+  grid-area: 1 / 1;
+  display: flex;
   flex-direction: column;
   gap: 16px;
+  visibility: hidden;
 }
 
 .tactics__slide-text[data-active="true"] {
-  display: flex;
+  visibility: visible;
 }
 
 .tactics__eyebrow {
@@ -731,7 +793,7 @@
 }
 
 @media (max-width: 900px) {
-  .tactics {
+  .tactics__row {
     flex-direction: column;
   }
 
@@ -754,66 +816,4 @@
   .tactics__arrows {
     align-self: flex-end;
   }
-}
-
-/* ---------------------------------------------------------------- related reading */
-
-.related-reading {
-  box-sizing: border-box;
-  width: 100%;
-  max-width: 1280px;
-  padding: 16px 24px;
-  background: var(--white);
-  border-bottom: 1px solid var(--peppercorn);
-  font-family: var(--font-sans);
-}
-
-.related-reading__link {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: 15px;
-  color: var(--peppercorn);
-  text-decoration: none;
-}
-
-.related-reading__group {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: 14px;
-}
-
-.related-reading__label {
-  padding: 10px;
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 1.13;
-  letter-spacing: 0.28px;
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-
-.related-reading__title {
-  font-size: 20px;
-  font-weight: 400;
-  line-height: 1.5;
-}
-
-.related-reading__link:hover .related-reading__title {
-  text-decoration: underline;
-}
-
-.related-reading__link:focus-visible {
-  outline: 2px solid var(--pumpkin);
-  outline-offset: 4px;
-}
-
-.related-reading__arrow {
-  display: block;
-  flex-shrink: 0;
-  width: 19px;
-  height: 18px;
 }
