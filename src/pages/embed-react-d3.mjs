@@ -4,6 +4,8 @@
 
 import { html } from '../lib/html.mjs';
 import { page, articleProse } from '../lib/layout.mjs';
+import { tacticsSection } from '../partials/tactics-section.mjs';
+import { relatedReading } from '../partials/related-reading.mjs';
 
 export function render() {
   return page({
@@ -14,6 +16,9 @@ export function render() {
     script: false,
     main: html`${articleProse()}
       <div data-sends-per-day-react></div>
-      <script src="sends-per-day-react.js" defer></script>`,
+      <div class="report-sections">${tacticsSection()} ${relatedReading()}</div>
+      <script src="sends-per-day-react.js" defer></script>
+      <!-- enhance.js is not used on this page; the carousel brings its own. -->
+      <script src="carousel.js" defer></script>`,
   });
 }

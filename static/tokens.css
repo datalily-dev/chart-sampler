@@ -7,6 +7,7 @@
 :root {
   --peppercorn: #231e15;
   --pumpkin: #ff7346;
+  --light-pumpkin: #ffdbcc;
   --jasmine: #f5f5f5;
   --white: #ffffff;
 
@@ -26,4 +27,12 @@
    * once the real webfont is supplied by the web production team.
    */
   --font-sans: "Graphik Mailchimp App", "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+  /*
+   * Means is the report's display serif and is likewise licensed and not
+   * distributed here. Same reasoning on the fallbacks: a transitional serif
+   * with close enough metrics that swapping in the real webfont does not
+   * reflow the headings.
+   */
+  --font-serif: "Means", "Tiempos Headline", Georgia, "Times New Roman", serif;
 }

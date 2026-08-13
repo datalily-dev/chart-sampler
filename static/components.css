@@ -1,5 +1,6 @@
 /**
- * The two Holiday Lookback interactive components.
+ * The Holiday Lookback interactive components, plus the report content
+ * sections that sit under them.
  *
  * This file plus tokens.css and the component markup is the whole handoff.
  * There is no build step and no framework: drop these into any page.
@@ -365,7 +366,454 @@
 @media (prefers-reduced-motion: reduce) {
   .chart__dot,
   .chart__tooltip,
-  .toggle__pill {
+  .toggle__pill,
+  .tactics__arrow {
     transition: none;
   }
+
+  .tactics__photo--entering,
+  .tactics__photo--entering img,
+  .tactics__slide-text--entering {
+    animation: none;
+  }
+}
+
+/* ---------------------------------------------------------------- report sections */
+
+/*
+ * The tactics section and the related reading bar are flush in the design, so
+ * they share a wrapper rather than inheriting the page's column gap.
+ */
+.report-sections {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---------------------------------------------------------------- tactics */
+
+/*
+ * Two columns at the design's 760:680 ratio. The report runs this full bleed at
+ * 1440; here it is capped to the same 1280 as .card--chart so its edges line up
+ * with the chart above it.
+ */
+.tactics {
+  box-sizing: border-box;
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  max-width: 1280px;
+  font-family: var(--font-sans);
+  color: var(--peppercorn);
+}
+
+.tactics *,
+.tactics *::before,
+.tactics *::after {
+  box-sizing: border-box;
+}
+
+/*
+ * Percentage bases rather than grow factors: the figure's aspect-ratio below
+ * gives the media column an intrinsic width, which grow factors would fold
+ * into the split and skew it off 760:680.
+ */
+.tactics__panel {
+  flex: 0 1 52.7778%;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--light-pumpkin);
+  padding: clamp(40px, 4.9vw, 70px) clamp(28px, 5.6vw, 80px) clamp(48px, 5.6vw, 80px);
+}
+
+.tactics__content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 600px;
+}
+
+.tactics__heading {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: clamp(28px, 2.5vw, 36px);
+  font-weight: 300;
+  line-height: 1.1;
+}
+
+.tactics__intro {
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.tactics__intro p {
+  margin: 0;
+}
+
+/* The design's blank line between the intro and the lead-in is one 16/1.5 line. */
+.tactics__intro p + p {
+  margin-top: 24px;
+}
+
+.tactics__lead-in {
+  font-weight: 600;
+}
+
+.tactics__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.tactics__item {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding-bottom: 8px;
+}
+
+/* Optically centred on the first line of the text next to it. */
+.tactics__check {
+  display: block;
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  margin-top: 6px;
+}
+
+.tactics__item-text {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.tactics__item-text a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-position: from-font;
+}
+
+.tactics__media {
+  flex: 0 1 47.2222%;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/*
+ * The aspect ratio sets the figure's natural height; it then grows so the
+ * column matches the taller panel and the callout stays bottom-aligned.
+ */
+/*
+ * The explicit width keeps aspect-ratio resolving width -> height, not the
+ * reverse. Peppercorn rather than transparent because the entering photo starts
+ * scaled down, and this is the stage it grows out of.
+ */
+.tactics__figure {
+  position: relative;
+  flex: 1 1 auto;
+  width: 100%;
+  aspect-ratio: 680 / 436;
+  min-height: 220px;
+  overflow: hidden;
+  background: var(--peppercorn);
+}
+
+/*
+ * Hidden by default and revealed only when active, so a missing or empty
+ * data-active can never fail open and show the whole stack at once.
+ */
+.tactics__photo {
+  position: absolute;
+  inset: 0;
+  display: none;
+}
+
+/*
+ * The outgoing photo does not move. It stays put at full size and full opacity
+ * while the incoming one slides over the top of it, which is why no gap can open
+ * between them, then it is dropped once it is fully covered.
+ */
+.tactics__photo--leaving {
+  display: block;
+}
+
+/* Above the leaving photo, so the incoming card slides over it, not under. */
+.tactics__photo[data-active="true"] {
+  display: block;
+  z-index: 1;
+}
+
+.tactics__photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Reproduces each photo's crop in Figma; set per slide in the markup. */
+  object-position: var(--tactics-crop, 50% 50%);
+}
+
+.tactics__callout {
+  background: var(--peppercorn);
+  color: var(--white);
+  padding: clamp(28px, 2.8vw, 40px) clamp(28px, 3.5vw, 50px) clamp(32px, 3.5vw, 50px);
+}
+
+.tactics__callout-inner {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+/*
+ * Only the active slide's text is in flow, so the callout takes its height from
+ * the copy it is actually showing. That is what lets the two-line stat push the
+ * panel taller and the figure give the space back, the way the design's 436 and
+ * 398 photo heights do.
+ */
+.tactics__stats {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.tactics__slide-text {
+  display: none;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.tactics__slide-text[data-active="true"] {
+  display: flex;
+}
+
+.tactics__eyebrow {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.13;
+  letter-spacing: 0.32px;
+  text-transform: uppercase;
+}
+
+.tactics__stat {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: clamp(26px, 2.2vw, 32px);
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+/* Revealed only once carousel.js is running. See the note in that file. */
+.tactics__arrows {
+  display: none;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.tactics__media--live .tactics__arrows {
+  display: flex;
+}
+
+.tactics__arrow {
+  display: block;
+  width: 43px;
+  height: 43px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: transform 150ms ease, opacity 150ms ease;
+}
+
+.tactics__arrow:hover {
+  opacity: 0.8;
+  transform: scale(1.06);
+}
+
+.tactics__arrow:focus-visible {
+  outline: 2px solid var(--white);
+  outline-offset: 3px;
+}
+
+.tactics__arrow img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.tactics__arrow--prev {
+  transform: rotate(180deg);
+}
+
+.tactics__arrow--prev:hover {
+  transform: rotate(180deg) scale(1.06);
+}
+
+/* ---------------------------------------------------------------- carousel motion */
+
+/*
+ * These four are the whole tuning surface. The photo travels in over
+ * --tactics-slide-ms, sits still for --tactics-hold-ms, then pulls back from
+ * --tactics-zoom-from to fit over --tactics-zoom-ms.
+ *
+ * Each is a real duration rather than a keyframe percentage because the travel
+ * and the zoom run on separate elements: the slide on .tactics__photo, the zoom
+ * on the img inside it. Two animations on one element cannot both drive
+ * transform — the last one declared wins outright — so splitting them across the
+ * pair is what lets either be retimed without touching the other.
+ */
+.tactics__media {
+  --tactics-slide-ms: 1000ms;
+  --tactics-hold-ms: 100ms;
+  --tactics-zoom-ms: 500ms;
+  --tactics-zoom-from: 1.00;
+}
+
+/*
+ * The photo only travels. It enters from off the right and decelerates into
+ * place; the easing has no overshoot, so it never passes its landing point.
+ * Going back mirrors the travel via --tactics-from, set by carousel.js per click.
+ */
+@keyframes tactics-slide-in {
+  from {
+    transform: translateX(var(--tactics-from, 100%));
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+/*
+ * The img only zooms. Its backwards fill holds the zoomed-in scale through the
+ * slide and the hold, which is what keeps the frame covered before the zoom
+ * begins: the photo is never smaller than its frame, never rounds its corners
+ * and never fades, and each of those is a way to expose the stage behind it.
+ */
+@keyframes tactics-zoom-fit {
+  from {
+    transform: scale(var(--tactics-zoom-from, 1.14));
+  }
+
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes tactics-text-in {
+  from {
+    transform: translateY(8px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.tactics__photo--entering {
+  animation: tactics-slide-in var(--tactics-slide-ms) cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* The delay is the slide plus the hold, so the zoom starts once travel has settled. */
+.tactics__photo--entering img {
+  animation: tactics-zoom-fit var(--tactics-zoom-ms)
+    calc(var(--tactics-slide-ms) + var(--tactics-hold-ms)) cubic-bezier(0.33, 1, 0.68, 1) both;
+}
+
+.tactics__slide-text--entering {
+  animation: tactics-text-in 380ms 90ms ease-out both;
+}
+
+@media (max-width: 900px) {
+  .tactics {
+    flex-direction: column;
+  }
+
+  /* Stacked, the figure no longer absorbs slack, so the ratio alone sizes it. */
+  .tactics__figure {
+    flex: 0 0 auto;
+    aspect-ratio: 3 / 2;
+    min-height: 0;
+  }
+}
+
+/* Narrower than this the arrows starve the stat of width, so they drop below it. */
+@media (max-width: 560px) {
+  .tactics__callout-inner {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 24px;
+  }
+
+  .tactics__arrows {
+    align-self: flex-end;
+  }
+}
+
+/* ---------------------------------------------------------------- related reading */
+
+.related-reading {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 1280px;
+  padding: 16px 24px;
+  background: var(--white);
+  border-bottom: 1px solid var(--peppercorn);
+  font-family: var(--font-sans);
+}
+
+.related-reading__link {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  color: var(--peppercorn);
+  text-decoration: none;
+}
+
+.related-reading__group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+}
+
+.related-reading__label {
+  padding: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.13;
+  letter-spacing: 0.28px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.related-reading__title {
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.related-reading__link:hover .related-reading__title {
+  text-decoration: underline;
+}
+
+.related-reading__link:focus-visible {
+  outline: 2px solid var(--pumpkin);
+  outline-offset: 4px;
+}
+
+.related-reading__arrow {
+  display: block;
+  flex-shrink: 0;
+  width: 19px;
+  height: 18px;
 }
