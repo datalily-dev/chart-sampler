@@ -2,12 +2,12 @@
  * Delivery option one from the CMS conversation: an iframe embed.
  *
  * The components render correctly for a human. The parent document, which is
- * what a crawler actually receives, contains no figures at all: just prose and
- * two iframe elements pointing somewhere else.
+ * what a crawler actually receives, contains no figures at all: just two iframe
+ * elements pointing somewhere else.
  */
 
 import { html } from '../lib/html.mjs';
-import { page, variantBanner, articleProse } from '../lib/layout.mjs';
+import { page, variantBanner } from '../lib/layout.mjs';
 
 export function render() {
   return page({
@@ -22,10 +22,9 @@ export function render() {
       verdict: 'Read by Bing Copilot only',
       summary:
         'ChatGPT, Claude, Gemini, Perplexity, Grok, and DeepSeek do not follow iframe sources. ' +
-        'To all of them this page contains prose and nothing else.',
+        'To all of them this page is empty.',
     }),
-    main: html`${articleProse()}
-      <iframe
+    main: html`<iframe
         class="embed-frame"
         src="frame-sends-per-day.html"
         title="Emails and SMS sent per day during BFCM 2025"

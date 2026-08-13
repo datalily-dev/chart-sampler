@@ -1,21 +1,5 @@
 import { html } from './html.mjs';
 
-/**
- * Prose lifted from the Holiday Lookback Report itself, so each delivery
- * variant is a realistic page: the surrounding copy is always in the HTML and
- * only the interactive component's delivery mechanism changes between them.
- */
-export const ARTICLE = {
-  eyebrow: 'Peak season',
-  heading: 'Email drives more overall peak season revenue, but SMS has higher order rates',
-  body:
-    'No surprise, email drove the majority of revenue during peak season, largely because ' +
-    'brands send more emails than SMS messages. Throughout peak season, Mailchimp brands sent ' +
-    'over 500x more marketing emails than text messages. But SMS is quickly growing as a ' +
-    'high-value channel. Text message order rates landed between 0.05% and 0.25% during peak ' +
-    'season, while email order rates were between 0.01% and 0.04%.',
-};
-
 export function page({ title, description, banner, main, script = true, chrome = true }) {
   return html`<!doctype html>
 <html lang="en">
@@ -52,12 +36,4 @@ export function variantBanner({ name, verdict, tone, summary }) {
       </nav>
     </div>
   </div>`;
-}
-
-export function articleProse() {
-  return html`<header class="article__header">
-      <p class="article__eyebrow">${ARTICLE.eyebrow}</p>
-      <h1 class="article__heading">${ARTICLE.heading}</h1>
-    </header>
-    <p class="article__body">${ARTICLE.body}</p>`;
 }

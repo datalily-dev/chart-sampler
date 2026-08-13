@@ -3,7 +3,7 @@
  */
 
 import { html } from '../lib/html.mjs';
-import { page, articleProse } from '../lib/layout.mjs';
+import { page } from '../lib/layout.mjs';
 import { tacticsSection } from '../partials/tactics-section.mjs';
 import { relatedReading } from '../partials/related-reading.mjs';
 
@@ -14,8 +14,7 @@ export function render() {
       'Holiday Lookback chart and peak season stats built with React, D3, and MUI.',
     // The bundle mounts its own React tree; enhance.js is not used here.
     script: false,
-    main: html`${articleProse()}
-      <div data-sends-per-day-react></div>
+    main: html`<div data-sends-per-day-react></div>
       <div class="report-sections">${tacticsSection()} ${relatedReading()}</div>
       <script src="sends-per-day-react.js" defer></script>
       <!-- enhance.js is not used on this page; the carousel brings its own. -->

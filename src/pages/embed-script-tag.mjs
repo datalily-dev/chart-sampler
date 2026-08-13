@@ -9,7 +9,7 @@
  */
 
 import { html } from '../lib/html.mjs';
-import { page, variantBanner, articleProse } from '../lib/layout.mjs';
+import { page, variantBanner } from '../lib/layout.mjs';
 
 export function render() {
   return page({
@@ -27,8 +27,7 @@ export function render() {
         'ChatGPT, Claude, Gemini, and Perplexity are plain HTTP clients with no JavaScript ' +
         'engine. They fetch this page and find two empty divs where the data should be.',
     }),
-    main: html`${articleProse()}
-      <div id="sends-per-day-mount" data-widget="sends-per-day"></div>
+    main: html`<div id="sends-per-day-mount" data-widget="sends-per-day"></div>
       <div id="peak-stats-mount" data-widget="peak-stats"></div>
       <script src="widget.js" defer></script>`,
   });

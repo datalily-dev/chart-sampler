@@ -3,7 +3,7 @@
  *
  * The chart itself is client-rendered, so there is nothing in the HTML to probe
  * for figures. What the shell must still get right is the mount point, the
- * bundle reference, the stylesheets, and the surrounding article prose.
+ * bundle reference, and the stylesheets.
  *
  * Run: node build.mjs && node scripts/smoke.mjs
  */
@@ -20,7 +20,6 @@ const CHECKS = [
   { label: 'React bundle', needle: 'sends-per-day-react.js' },
   { label: 'Design tokens', needle: 'tokens.css' },
   { label: 'Component styles', needle: 'components.css' },
-  { label: 'Article heading', needle: 'Email drives more overall peak season revenue' },
   { label: 'Carousel script', needle: 'carousel.js' },
   /*
    * The carousel shows one slide at a time, so these assert the other two are

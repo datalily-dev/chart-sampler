@@ -2,10 +2,7 @@
 
 import { html } from '../lib/html.mjs';
 
-/**
- * Editorial copy lifted from the Holiday Lookback Report, kept next to the
- * markup the same way ARTICLE in lib/layout.mjs is.
- */
+/** Editorial copy lifted from the Holiday Lookback Report, kept next to the markup. */
 export const TACTICS = {
   heading: 'Steal the best tactics most brands last year skipped',
   intro:
