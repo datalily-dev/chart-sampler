@@ -292,11 +292,13 @@ export default function ClickRatesChart({ data }) {
         }}
       >
         {/*
-         * The 240px basis is the hinge. Above it the toggle still fits alongside
-         * and sits top-right, which is the 600px column; below it the toggle
-         * wraps under the subtitle, which is the 448px column and the phone.
+         * The 300px basis is the hinge, the same one NewContactsChart uses.
+         * Above it the toggle still fits alongside and sits top-right, which is
+         * the 600px column; below it the toggle wraps under the subtitle, which
+         * is the 448px column, the phone, and the small-tablet widths in
+         * between.
          */}
-        <Box sx={{ flex: '1 1 240px', minWidth: 0 }}>
+        <Box sx={{ flex: '1 1 300px', minWidth: 0 }}>
           <Typography
             component="h3"
             sx={{ m: 0, fontFamily: FONT_STACK, fontSize: 21, fontWeight: 500, lineHeight: 1.35 }}

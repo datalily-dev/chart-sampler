@@ -109,13 +109,14 @@ export default function HolidayPerformanceChart({ data }) {
           /*
            * Takes whatever the toggle leaves rather than a fixed measure, so the
            * title uses the full width available to it in whichever font actually
-           * loads. The 200px basis is the hinge: above it the toggle still fits
-           * alongside and sits top-right, below it the toggle wraps underneath,
-           * which is the phone layout.
+           * loads. The 300px basis is the hinge, the same one NewContactsChart
+           * uses: above it the toggle still fits alongside and sits top-right,
+           * below it the toggle wraps underneath, which is the phone and
+           * small-tablet layout the rest of the cards share.
            */
           sx={{
             m: 0,
-            flex: '1 1 200px',
+            flex: '1 1 300px',
             minWidth: 0,
             fontFamily: FONT_STACK,
             fontSize: 21,
