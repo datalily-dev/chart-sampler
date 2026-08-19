@@ -1,0 +1,43 @@
+{
+  "title": "Revenue per message surrounding BFCM 2025",
+  "range": "November 20 - December 8",
+  "source": "Breaking Through Peak Season Noise Report, September 2026",
+  "series": {
+    "email": {
+      "label": "Email",
+      "unit": "revenue per email",
+      "note": "Revenue per message sent for Mailchimp customers on free and paid plans with a connected ecommerce store, November 20-December 8, 2025",
+      "axisMax": 0.06,
+      "axisTicks": [0, 0.01, 0.02, 0.03, 0.04, 0.05, 0.06]
+    },
+    "sms": {
+      "label": "SMS",
+      "unit": "revenue per message",
+      "note": "Revenue per message sent for Mailchimp customers on free and paid plans with a connected ecommerce store, November 20-December 8, 2025",
+      "axisMax": 0.3,
+      "axisTicks": [0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3]
+    }
+  },
+  "points": [
+    { "date": "2025-11-20", "email": 0.0225, "sms": 0.11 },
+    { "date": "2025-11-21", "email": 0.024, "sms": 0.09 },
+    { "date": "2025-11-22", "email": 0.038, "sms": 0.18 },
+    { "date": "2025-11-23", "email": 0.04, "sms": 0.26 },
+    { "date": "2025-11-24", "email": 0.0275, "sms": 0.11 },
+    { "date": "2025-11-25", "email": 0.025, "sms": 0.09 },
+    { "date": "2025-11-26", "email": 0.027, "sms": 0.1, "holiday": "Pre-Thanksgiving Day" },
+    { "date": "2025-11-27", "email": 0.03, "sms": 0.13, "holiday": "Thanksgiving" },
+    { "date": "2025-11-28", "email": 0.039, "sms": 0.12, "holiday": "Black Friday" },
+    { "date": "2025-11-29", "email": 0.0585, "sms": 0.28, "holiday": "Small Business Saturday" },
+    { "date": "2025-11-30", "email": 0.051, "sms": 0.22 },
+    { "date": "2025-12-01", "email": 0.032, "sms": 0.16, "holiday": "Cyber Monday" },
+    { "date": "2025-12-02", "email": 0.026, "sms": 0.13, "holiday": "Giving Tuesday" },
+    { "date": "2025-12-03", "email": 0.023, "sms": 0.08 },
+    { "date": "2025-12-04", "email": 0.022, "sms": 0.1 },
+    { "date": "2025-12-05", "email": 0.022, "sms": 0.06 },
+    { "date": "2025-12-06", "email": 0.0315, "sms": 0.18 },
+    { "date": "2025-12-07", "email": 0.034, "sms": 0.17 },
+    { "date": "2025-12-08", "email": 0.024, "sms": 0.07 }
+  ],
+  "notes": "Email figures carry sub-cent precision because a cent-rounded series only spans four steps and draws as a staircase. Every value floors to the cent figure published in the handoff table, per the report's round-down rule: Nov 29 is 0.0585, which reads $0.05."
+}

@@ -19,6 +19,10 @@ const DIST = join(ROOT, 'dist');
 const readData = (name) => JSON.parse(readFileSync(join(ROOT, 'src', 'data', name), 'utf8'));
 
 const dailySends = readData('daily-sends.json');
+const clickRates = readData('click-rates.json');
+const revenuePerMessage = readData('revenue-per-message.json');
+const orderRates = readData('order-rates.json');
+const newContacts = readData('new-contacts.json');
 
 rmSync(DIST, { recursive: true, force: true });
 mkdirSync(DIST, { recursive: true });
@@ -29,6 +33,10 @@ const write = (name, contents) => {
 
 write('index.html', renderReactD3());
 write('daily-sends.json', `${JSON.stringify(dailySends, null, 2)}\n`);
+write('click-rates.json', `${JSON.stringify(clickRates, null, 2)}\n`);
+write('revenue-per-message.json', `${JSON.stringify(revenuePerMessage, null, 2)}\n`);
+write('order-rates.json', `${JSON.stringify(orderRates, null, 2)}\n`);
+write('new-contacts.json', `${JSON.stringify(newContacts, null, 2)}\n`);
 cpSync(join(ROOT, 'static'), DIST, { recursive: true });
 
 const clientBundle = join(ROOT, 'client', 'dist', 'sends-per-day-react.js');

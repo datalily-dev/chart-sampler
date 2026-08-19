@@ -1,0 +1,420 @@
+{
+  "title": "Order rates by day during peak season 2025",
+  "range": "October 31 - December 31",
+  "source": "Breaking Through Peak Season Noise Report, September 2026",
+  "series": {
+    "email": {
+      "label": "Email",
+      "unit": "order rate",
+      "note": "Order rate by day for Mailchimp customers on free and paid plans with a connected ecommerce store, October 31-December 31, 2025, weekends shaded",
+      "axisMax": 0.04,
+      "axisTicks": [
+        0,
+        0.01,
+        0.02,
+        0.03,
+        0.04
+      ]
+    },
+    "sms": {
+      "label": "SMS",
+      "unit": "order rate",
+      "note": "Order rate by day for Mailchimp customers on free and paid plans with a connected ecommerce store, October 31-December 31, 2025, weekends shaded",
+      "axisMax": 0.25,
+      "axisTicks": [
+        0,
+        0.05,
+        0.1,
+        0.15,
+        0.2,
+        0.25
+      ]
+    }
+  },
+  "points": [
+    {
+      "date": "2025-10-31",
+      "weekday": "Fri",
+      "email": 0.0148,
+      "sms": 0.09,
+      "holiday": "Halloween"
+    },
+    {
+      "date": "2025-11-01",
+      "weekday": "Sat",
+      "email": 0.028,
+      "sms": 0.23
+    },
+    {
+      "date": "2025-11-02",
+      "weekday": "Sun",
+      "email": 0.0281,
+      "sms": 0.13
+    },
+    {
+      "date": "2025-11-03",
+      "weekday": "Mon",
+      "email": 0.0181,
+      "sms": 0.1
+    },
+    {
+      "date": "2025-11-04",
+      "weekday": "Tue",
+      "email": 0.0134,
+      "sms": 0.06
+    },
+    {
+      "date": "2025-11-05",
+      "weekday": "Wed",
+      "email": 0.0131,
+      "sms": 0.08
+    },
+    {
+      "date": "2025-11-06",
+      "weekday": "Thu",
+      "email": 0.0122,
+      "sms": 0.05
+    },
+    {
+      "date": "2025-11-07",
+      "weekday": "Fri",
+      "email": 0.0127,
+      "sms": 0.08
+    },
+    {
+      "date": "2025-11-08",
+      "weekday": "Sat",
+      "email": 0.0223,
+      "sms": 0.14
+    },
+    {
+      "date": "2025-11-09",
+      "weekday": "Sun",
+      "email": 0.0256,
+      "sms": 0.13
+    },
+    {
+      "date": "2025-11-10",
+      "weekday": "Mon",
+      "email": 0.0149,
+      "sms": 0.09
+    },
+    {
+      "date": "2025-11-11",
+      "weekday": "Tue",
+      "email": 0.016,
+      "sms": 0.06
+    },
+    {
+      "date": "2025-11-12",
+      "weekday": "Wed",
+      "email": 0.0142,
+      "sms": 0.07
+    },
+    {
+      "date": "2025-11-13",
+      "weekday": "Thu",
+      "email": 0.0124,
+      "sms": 0.06
+    },
+    {
+      "date": "2025-11-14",
+      "weekday": "Fri",
+      "email": 0.0135,
+      "sms": 0.1
+    },
+    {
+      "date": "2025-11-15",
+      "weekday": "Sat",
+      "email": 0.025,
+      "sms": 0.25
+    },
+    {
+      "date": "2025-11-16",
+      "weekday": "Sun",
+      "email": 0.0298,
+      "sms": 0.16
+    },
+    {
+      "date": "2025-11-17",
+      "weekday": "Mon",
+      "email": 0.0241,
+      "sms": 0.1
+    },
+    {
+      "date": "2025-11-18",
+      "weekday": "Tue",
+      "email": 0.0149,
+      "sms": 0.05
+    },
+    {
+      "date": "2025-11-19",
+      "weekday": "Wed",
+      "email": 0.014,
+      "sms": 0.06
+    },
+    {
+      "date": "2025-11-20",
+      "weekday": "Thu",
+      "email": 0.0136,
+      "sms": 0.07
+    },
+    {
+      "date": "2025-11-21",
+      "weekday": "Fri",
+      "email": 0.0226,
+      "sms": 0.08
+    },
+    {
+      "date": "2025-11-22",
+      "weekday": "Sat",
+      "email": 0.0294,
+      "sms": 0.14
+    },
+    {
+      "date": "2025-11-23",
+      "weekday": "Sun",
+      "email": 0.0263,
+      "sms": 0.17
+    },
+    {
+      "date": "2025-11-24",
+      "weekday": "Mon",
+      "email": 0.0205,
+      "sms": 0.08
+    },
+    {
+      "date": "2025-11-25",
+      "weekday": "Tue",
+      "email": 0.0169,
+      "sms": 0.08
+    },
+    {
+      "date": "2025-11-26",
+      "weekday": "Wed",
+      "email": 0.016,
+      "sms": 0.07,
+      "holiday": "Pre-Thanksgiving Day"
+    },
+    {
+      "date": "2025-11-27",
+      "weekday": "Thu",
+      "email": 0.0165,
+      "sms": 0.09,
+      "holiday": "Thanksgiving"
+    },
+    {
+      "date": "2025-11-28",
+      "weekday": "Fri",
+      "email": 0.027,
+      "sms": 0.08,
+      "holiday": "Black Friday"
+    },
+    {
+      "date": "2025-11-29",
+      "weekday": "Sat",
+      "email": 0.0377,
+      "sms": 0.18,
+      "holiday": "Small Business Saturday"
+    },
+    {
+      "date": "2025-11-30",
+      "weekday": "Sun",
+      "email": 0.0377,
+      "sms": 0.16
+    },
+    {
+      "date": "2025-12-01",
+      "weekday": "Mon",
+      "email": 0.0249,
+      "sms": 0.11,
+      "holiday": "Cyber Monday"
+    },
+    {
+      "date": "2025-12-02",
+      "weekday": "Tue",
+      "email": 0.0202,
+      "sms": 0.08,
+      "holiday": "Giving Tuesday"
+    },
+    {
+      "date": "2025-12-03",
+      "weekday": "Wed",
+      "email": 0.0145,
+      "sms": 0.06
+    },
+    {
+      "date": "2025-12-04",
+      "weekday": "Thu",
+      "email": 0.0141,
+      "sms": 0.08
+    },
+    {
+      "date": "2025-12-05",
+      "weekday": "Fri",
+      "email": 0.0149,
+      "sms": 0.09
+    },
+    {
+      "date": "2025-12-06",
+      "weekday": "Sat",
+      "email": 0.0268,
+      "sms": 0.19
+    },
+    {
+      "date": "2025-12-07",
+      "weekday": "Sun",
+      "email": 0.0257,
+      "sms": 0.15
+    },
+    {
+      "date": "2025-12-08",
+      "weekday": "Mon",
+      "email": 0.0187,
+      "sms": 0.07
+    },
+    {
+      "date": "2025-12-09",
+      "weekday": "Tue",
+      "email": 0.0143,
+      "sms": 0.08
+    },
+    {
+      "date": "2025-12-10",
+      "weekday": "Wed",
+      "email": 0.0128,
+      "sms": 0.04
+    },
+    {
+      "date": "2025-12-11",
+      "weekday": "Thu",
+      "email": 0.0149,
+      "sms": 0.04
+    },
+    {
+      "date": "2025-12-12",
+      "weekday": "Fri",
+      "email": 0.0218,
+      "sms": 0.07
+    },
+    {
+      "date": "2025-12-13",
+      "weekday": "Sat",
+      "email": 0.0262,
+      "sms": 0.12
+    },
+    {
+      "date": "2025-12-14",
+      "weekday": "Sun",
+      "email": 0.025,
+      "sms": 0.09
+    },
+    {
+      "date": "2025-12-15",
+      "weekday": "Mon",
+      "email": 0.0161,
+      "sms": 0.04
+    },
+    {
+      "date": "2025-12-16",
+      "weekday": "Tue",
+      "email": 0.0126,
+      "sms": 0.03
+    },
+    {
+      "date": "2025-12-17",
+      "weekday": "Wed",
+      "email": 0.0109,
+      "sms": 0.04
+    },
+    {
+      "date": "2025-12-18",
+      "weekday": "Thu",
+      "email": 0.0122,
+      "sms": 0.05
+    },
+    {
+      "date": "2025-12-19",
+      "weekday": "Fri",
+      "email": 0.0149,
+      "sms": 0.05
+    },
+    {
+      "date": "2025-12-20",
+      "weekday": "Sat",
+      "email": 0.02,
+      "sms": 0.11
+    },
+    {
+      "date": "2025-12-21",
+      "weekday": "Sun",
+      "email": 0.0187,
+      "sms": 0.09
+    },
+    {
+      "date": "2025-12-22",
+      "weekday": "Mon",
+      "email": 0.0146,
+      "sms": 0.03
+    },
+    {
+      "date": "2025-12-23",
+      "weekday": "Tue",
+      "email": 0.0103,
+      "sms": 0.04
+    },
+    {
+      "date": "2025-12-24",
+      "weekday": "Wed",
+      "email": 0.011,
+      "sms": 0.06,
+      "holiday": "Christmas Eve"
+    },
+    {
+      "date": "2025-12-25",
+      "weekday": "Thu",
+      "email": 0.0145,
+      "sms": 0.09,
+      "holiday": "Christmas Day"
+    },
+    {
+      "date": "2025-12-26",
+      "weekday": "Fri",
+      "email": 0.0194,
+      "sms": 0.05,
+      "holiday": "Boxing Day"
+    },
+    {
+      "date": "2025-12-27",
+      "weekday": "Sat",
+      "email": 0.023,
+      "sms": 0.07
+    },
+    {
+      "date": "2025-12-28",
+      "weekday": "Sun",
+      "email": 0.0204,
+      "sms": 0.08
+    },
+    {
+      "date": "2025-12-29",
+      "weekday": "Mon",
+      "email": 0.0123,
+      "sms": 0.04
+    },
+    {
+      "date": "2025-12-30",
+      "weekday": "Tue",
+      "email": 0.011,
+      "sms": 0.04
+    },
+    {
+      "date": "2025-12-31",
+      "weekday": "Wed",
+      "email": 0.011,
+      "sms": 0.05,
+      "holiday": "New Year's Eve"
+    }
+  ],
+  "notes": "Email figures carry four decimals because the two-decimal series only spans four steps and draws as a staircase; each one prints as the figure the handoff table publishes, which scripts/derive-order-rates.mjs checks before writing. Weekends are shaded from the weekday field; the holiday field names the day on the tooltip."
+}

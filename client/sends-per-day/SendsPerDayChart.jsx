@@ -25,6 +25,7 @@ import Typography from '@mui/material/Typography';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
+import ChartTag, { tagMetrics } from './ChartTag.jsx';
 import { compact, longDate, shortDate, withCommas } from './format.js';
 
 const PEPPERCORN = '#231E15';
@@ -40,16 +41,6 @@ const PALETTES = {
     band: '#FAF1DF',
     bandStyle: 'solid',
     bandOpacity: 1,
-    bandLabel: PEPPERCORN,
-  },
-  pink: {
-    line: '#ff7346',
-    cardBg: '#fef6f7',
-    grid: 'rgba(35, 30, 21, 0.15)',
-    band: '#ffccd8',
-    bandStyle: 'glow',
-    bandOpacity: 0.5,
-    bandLabel: '#231e15',
   },
 };
 
@@ -60,7 +51,7 @@ function bandRange(points) {
   if (bf < 0 || cm < 0) return null;
   // Inclusive of BF and CM only (Nov 28 – Dec 1); half-step pads so the
   // solid block covers those day columns rather than point-centers.
-  return { start: bf - 0.5, end: cm + 0.5, bf, cm };
+  return { start: bf - 0.5, end: cm + 0.5 };
 }
 
 /**
@@ -82,9 +73,9 @@ export default function SendsPerDayChart({ data, palette = 'cream' }) {
   const [active, setActive] = useState(seriesKeys[0] ?? 'email');
   const series = data.series[active];
 
-  // Measure the plot area. The card is a fixed 520px tall; this observer takes
-  // whatever height is left after the header and footer and recomputes the
-  // layout whenever that box changes size.
+  // Measure the plot area, whether its height comes from the fixed card or from
+  // its own aspect ratio, and recompute the layout whenever that box changes
+  // size.
   const containerRef = useRef(null);
   const [size, setSize] = useState({ width: 0, height: 0 });
 
@@ -116,6 +107,7 @@ export default function SendsPerDayChart({ data, palette = 'cream' }) {
   const hoverRadius = narrow ? 6 : 8;
   const tickFont = narrow ? 11 : 14;
   const valueFont = narrow ? 10 : width < 900 ? 11.5 : 13;
+  const tag = tagMetrics(narrow);
 
   /*
    * The per-point value labels are the one thing here that can genuinely
@@ -181,6 +173,14 @@ export default function SendsPerDayChart({ data, palette = 'cream' }) {
 
   const band = useMemo(() => bandRange(data.points), [data.points]);
 
+  /* The band in plot coordinates, shared by the shading, the tag that names it,
+     and the value labels that have to keep clear of that tag. */
+  const bandBox = useMemo(() => {
+    if (!band || !width) return null;
+    const x = xScale(band.start);
+    return { x, width: Math.max(0, xScale(band.end) - x), tagBottom: margin.top - tag.gap };
+  }, [band, width, xScale, margin.top, tag.gap]);
+
   /*
    * Placing the labels, once the density is settled.
    *
@@ -194,7 +194,15 @@ export default function SendsPerDayChart({ data, palette = 'cream' }) {
    * in practice only happens on the narrowest cards.
    *
    * The y-axis ticks go in as fixed obstacles, because the first point sits
-   * directly against that column and would otherwise print on top of one.
+   * directly against that column and would otherwise print on top of one. The
+   * BFCM tag is the other one, and the reason a single row of labels still gets
+   * the position under the dot: the tag is opaque and all but touches the top
+   * gridline, so the peak inside that window has nothing above it to take.
+   *
+   * That leaves the peak one position on the whole chart, which is why it is
+   * placed before the left-to-right pass rather than in it. Taken in order it
+   * loses that position to whichever neighbour reaches it first, and the figure
+   * the chart is about is the last one that should be dropped.
    */
   const valueLabels = useMemo(() => {
     if (!width || !height) return [];
@@ -207,7 +215,14 @@ export default function SendsPerDayChart({ data, palette = 'cream' }) {
     });
     const labels = [];
 
-    for (let i = 0; i < data.points.length; i += valueStep) {
+    const indices = [];
+    for (let i = 0; i < data.points.length; i += valueStep) indices.push(i);
+    const peak = indices.reduce(
+      (best, i) => (data.points[i][active] > data.points[best][active] ? i : best),
+      indices[0],
+    );
+
+    for (const i of [peak, ...indices.filter((index) => index !== peak)]) {
       const point = data.points[i];
       const text = compact(point[active]);
       const half = (text.length * 0.64 * valueFont + 6) / 2;
@@ -217,7 +232,13 @@ export default function SendsPerDayChart({ data, palette = 'cream' }) {
       const below = y + dotRadius + valueFont + 2;
       const options = twoRows
         ? [above, below, above - lineHeight, below + lineHeight]
-        : [above];
+        : [above, below];
+
+      const clearsTag = (candidate) =>
+        !bandBox ||
+        x + half <= bandBox.x ||
+        x - half >= bandBox.x + bandBox.width ||
+        candidate - valueFont >= bandBox.tagBottom;
 
       // Only the labels still within a label's width can overlap this one.
       const neighbours = placed.filter((label) => label.x + label.half > x - half);
@@ -225,6 +246,7 @@ export default function SendsPerDayChart({ data, palette = 'cream' }) {
         (candidate) =>
           candidate >= ceiling &&
           candidate <= floor &&
+          clearsTag(candidate) &&
           neighbours.every((label) => Math.abs(label.y - candidate) >= lineHeight),
       );
       if (spot === undefined) continue;
@@ -250,6 +272,7 @@ export default function SendsPerDayChart({ data, palette = 'cream' }) {
     margin.left,
     xScale,
     yScale,
+    bandBox,
   ]);
   const lineRef = useRef(null);
 
@@ -282,8 +305,12 @@ export default function SendsPerDayChart({ data, palette = 'cream' }) {
       component="figure"
       sx={{
         m: 0,
-        maxWidth: 1280,
-        height: 520,
+        width: '100%',
+        // Fixed above a phone, where the header and the caption each take one
+        // line and the plot can safely have whatever is left. On a phone the
+        // caption is three stacked lines and the toggle has wrapped, so the card
+        // grows to fit them and the plot sizes itself instead.
+        height: { xs: 'auto', sm: 520 },
         boxSizing: 'border-box',
         p: { xs: '20px 16px 20px', sm: '24px 32px 24px' },
         borderRadius: '26px',
@@ -363,36 +390,40 @@ export default function SendsPerDayChart({ data, palette = 'cream' }) {
 
       <Box
         ref={containerRef}
-        sx={{ mt: '20px', width: '100%', flex: 1, minHeight: 0, position: 'relative' }}
+        sx={{
+          mt: '20px',
+          width: '100%',
+          position: 'relative',
+          // Near-square on a phone, where the card height is free; from 600 up
+          // it takes what the fixed card has left after the header and caption.
+          aspectRatio: '1 / 0.85',
+          '@media (min-width: 600px)': { aspectRatio: 'auto', flex: 1, minHeight: 0 },
+        }}
       >
         {width > 0 && height > 0 ? (
           <svg
             width={width}
             height={height}
             role="img"
-            aria-label={`${data.title}. ${data.range}.`}
+            aria-label={`${data.title}, ${series.label}. ${data.range}. ${data.note}`}
             style={{ display: 'block', maxWidth: '100%', overflow: 'visible' }}
           >
-            {band
+            {bandBox
               ? (() => {
                   const plotTop = margin.top;
                   const plotBottom = height - margin.bottom;
-                  const bandX = xScale(band.start);
-                  const bandWidth = Math.max(0, xScale(band.end) - bandX);
-                  const labelX = (xScale(band.bf) + xScale(band.cm)) / 2;
-                  const bandLabel = (
-                    <text
-                      x={labelX}
-                      y={margin.top - 26}
-                      textAnchor="middle"
-                      style={{
-                        fontSize: narrow ? 12 : 16,
-                        fontWeight: 500,
-                        fill: colors.bandLabel,
-                      }}
-                    >
-                      {narrow ? 'BFCM' : 'Black Friday - Cyber Monday'}
-                    </text>
+                  const bandX = bandBox.x;
+                  const bandWidth = bandBox.width;
+                  const bandTag = (
+                    <ChartTag
+                      x={bandX}
+                      width={bandWidth}
+                      bottom={bandBox.tagBottom}
+                      height={tag.height}
+                      label="BFCM"
+                      fontSize={tag.fontSize}
+                      fill={colors.band}
+                    />
                   );
 
                   if (colors.bandStyle === 'solid') {
@@ -406,7 +437,7 @@ export default function SendsPerDayChart({ data, palette = 'cream' }) {
                           fill={colors.band}
                           opacity={colors.bandOpacity}
                         />
-                        {bandLabel}
+                        {bandTag}
                       </>
                     );
                   }
@@ -438,7 +469,7 @@ export default function SendsPerDayChart({ data, palette = 'cream' }) {
                         fill={`url(#${gradientId})`}
                         opacity={colors.bandOpacity}
                       />
-                      {bandLabel}
+                      {bandTag}
                     </>
                   );
                 })()
@@ -582,27 +613,45 @@ export default function SendsPerDayChart({ data, palette = 'cream' }) {
         ) : null}
       </Box>
 
+      {/* The logo takes the footer's right edge once there is room for it beside
+          two lines of source text, and drops below them when there is not. */}
       <Box
-        component="footer"
+        component="figcaption"
         sx={{
           mt: '20px',
           display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          gap: 2,
+          flexDirection: 'column',
+          alignItems: 'flex-start',
+          gap: '6px',
           flexShrink: 0,
+          '@media (min-width: 1024px)': {
+            flexDirection: 'row',
+            alignItems: 'flex-end',
+            justifyContent: 'space-between',
+            gap: '24px',
+          },
         }}
       >
-        <Typography sx={{ m: 0, fontFamily: FONT_STACK, fontSize: 13, lineHeight: 1.3 }}>
-          Source: {data.source}
-        </Typography>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: '6px', minWidth: 0 }}>
+          <Typography sx={{ m: 0, fontFamily: FONT_STACK, fontSize: 13, lineHeight: 1.4 }}>
+            Source: {data.source}
+          </Typography>
+          <Typography sx={{ m: 0, fontFamily: FONT_STACK, fontSize: 13, lineHeight: 1.4 }}>
+            {data.note}
+          </Typography>
+        </Box>
         <Box
           component="img"
           src="mailchimp-logo.svg"
           alt="Intuit Mailchimp"
           width={99}
           height={28}
-          sx={{ display: 'block', flexShrink: 0 }}
+          sx={{
+            display: 'block',
+            mt: '12px',
+            flexShrink: 0,
+            '@media (min-width: 1024px)': { mt: 0 },
+          }}
         />
       </Box>
     </Box>

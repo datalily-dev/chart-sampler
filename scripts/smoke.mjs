@@ -21,6 +21,9 @@ const CHECKS = [
   { label: 'Design tokens', needle: 'tokens.css' },
   { label: 'Component styles', needle: 'components.css' },
   { label: 'Carousel script', needle: 'carousel.js' },
+  { label: 'Ticker script', needle: 'ticker.js' },
+  // WCAG 2.2 SC 2.2.2: the marquee cannot ship without a way to stop it.
+  { label: 'Ticker play/pause control', needle: 'data-tactics-ticker-toggle' },
   /*
    * The carousel shows one slide at a time, so these assert the other two are
    * still in the shipped HTML rather than fetched on click. That is the same

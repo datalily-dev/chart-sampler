@@ -1,6 +1,7 @@
 {
   "title": "2025 peak season performance across email and SMS",
   "source": "Breaking Through Peak Season Noise Report, September 2026",
+  "note": "For emails and SMS sent between 10/31/2025 through 12/31/2025 by Mailchimp customers on free and paid plans with a connected e-commerce store",
   "series": {
     "email": { "label": "Email" },
     "sms": { "label": "SMS" }
@@ -17,7 +18,7 @@
       "sms": "$127.71"
     },
     {
-      "label": "Average order rate",
+      "label": "Order rate",
       "email": "0.02%",
       "sms": "0.08%"
     },

@@ -11,7 +11,7 @@
     "build": "node build.mjs",
     "build:client": "npm --prefix client install && npm --prefix client run build",
     "build:all": "npm run build:client && node build.mjs",
-    "derive": "node scripts/derive-series.mjs",
+    "derive": "node scripts/derive-series.mjs && node scripts/derive-order-rates.mjs && node scripts/derive-new-contacts.mjs",
     "dev": "npm --prefix client install && npm --prefix client run dev",
     "serve": "node scripts/serve.mjs",
     "share": "npm run build:all && HOST=0.0.0.0 node scripts/serve.mjs",

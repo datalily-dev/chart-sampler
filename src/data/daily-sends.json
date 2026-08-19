@@ -2,7 +2,7 @@
   "title": "Messages sent per day during BFCM 2025",
   "range": "November 20 - December 8",
   "source": "Breaking Through Peak Season Noise Report, September 2026",
-  "note": "Points flagged \"derived\": true were recovered from the Figma chart geometry because no published daily figure exists for that date. Replace them if exact numbers become available.",
+  "note": "Daily messages sent by Mailchimp customers on free and paid plans, November 20-December 8, 2025",
   "series": {
     "email": {
       "label": "Email",
@@ -35,123 +35,104 @@
   "points": [
     {
       "date": "2025-11-20",
-      "email": 981000000,
-      "sms": 1280000,
-      "derived": true
+      "email": 953360234,
+      "sms": 1265875
     },
     {
       "date": "2025-11-21",
-      "email": 969000000,
-      "sms": 1840000,
-      "derived": true
+      "email": 946589375,
+      "sms": 1745337
     },
     {
       "date": "2025-11-22",
-      "email": 432000000,
-      "sms": 772000,
-      "derived": true
+      "email": 411027583,
+      "sms": 635572
     },
     {
       "date": "2025-11-23",
-      "email": 373000000,
-      "sms": 581000,
-      "derived": true
+      "email": 364090006,
+      "sms": 461892
     },
     {
       "date": "2025-11-24",
-      "email": 886000000,
-      "sms": 1660000,
-      "derived": true
+      "email": 890835547,
+      "sms": 1536182
     },
     {
       "date": "2025-11-25",
-      "email": 1080000000,
-      "sms": 2030000,
-      "derived": true
+      "email": 1030004886,
+      "sms": 1895030
     },
     {
       "date": "2025-11-26",
       "email": 1013302698,
       "sms": 1654653,
-      "derived": false,
       "holiday": "Pre-Thanksgiving Day"
     },
     {
       "date": "2025-11-27",
       "email": 929582577,
       "sms": 1517036,
-      "derived": false,
       "holiday": "Thanksgiving"
     },
     {
       "date": "2025-11-28",
       "email": 1390289396,
       "sms": 5430859,
-      "derived": false,
       "holiday": "Black Friday"
     },
     {
       "date": "2025-11-29",
       "email": 541884269,
       "sms": 1555037,
-      "derived": false,
       "holiday": "Small Business Saturday"
     },
     {
       "date": "2025-11-30",
-      "email": 566000000,
-      "sms": 979000,
-      "derived": true
+      "email": 565537819,
+      "sms": 938713
     },
     {
       "date": "2025-12-01",
       "email": 1300247595,
       "sms": 3405629,
-      "derived": false,
       "holiday": "Cyber Monday"
     },
     {
       "date": "2025-12-02",
       "email": 1153007717,
       "sms": 2429545,
-      "derived": false,
       "holiday": "Giving Tuesday"
     },
     {
       "date": "2025-12-03",
-      "email": 859000000,
-      "sms": 1900000,
-      "derived": true
+      "email": 875176041,
+      "sms": 1890480
     },
     {
       "date": "2025-12-04",
-      "email": 941000000,
-      "sms": 1770000,
-      "derived": true
+      "email": 922316136,
+      "sms": 1807044
     },
     {
       "date": "2025-12-05",
-      "email": 882000000,
-      "sms": 2540000,
-      "derived": true
+      "email": 886884461,
+      "sms": 2471481
     },
     {
       "date": "2025-12-06",
-      "email": 409000000,
-      "sms": 836000,
-      "derived": true
+      "email": 394764686,
+      "sms": 663979
     },
     {
       "date": "2025-12-07",
-      "email": 341000000,
-      "sms": 581000,
-      "derived": true
+      "email": 339551035,
+      "sms": 489669
     },
     {
       "date": "2025-12-08",
-      "email": 709000000,
-      "sms": 1520000,
-      "derived": true
+      "email": 706802909,
+      "sms": 1459562
     }
   ]
 }

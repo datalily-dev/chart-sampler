@@ -1,0 +1,111 @@
+{
+  "title": "Email and SMS performance on major peak season holidays in 2025",
+  "source": "Breaking Through Peak Season Noise Report, September 2026",
+  "metrics": {
+    "sent": { "label": "Messages sent" },
+    "clickRate": { "label": "Click rate" },
+    "conversionRate": { "label": "Conversion rate" }
+  },
+  "series": {
+    "email": {
+      "label": "Email",
+      "metrics": {
+        "sent": { "unit": "emails sent", "format": "compact", "axisMax": 1500000000 },
+        "clickRate": { "unit": "click rate", "format": "percent", "decimals": 2, "axisMax": 2.5 },
+        "conversionRate": {
+          "unit": "conversion rate",
+          "format": "percent",
+          "decimals": 2,
+          "axisMax": 0.25
+        }
+      }
+    },
+    "sms": {
+      "label": "SMS",
+      "metrics": {
+        "sent": { "unit": "texts sent", "format": "compact", "axisMax": 6000000 },
+        "clickRate": { "unit": "click rate", "format": "percent", "decimals": 1, "axisMax": 20 },
+        "conversionRate": {
+          "unit": "conversion rate",
+          "format": "percent",
+          "decimals": 2,
+          "axisMax": 0.2
+        }
+      }
+    }
+  },
+  "holidays": [
+    {
+      "date": "2025-10-31",
+      "label": "Halloween",
+      "email": { "sent": 910311342, "clickRate": 1.68, "conversionRate": 0.17 },
+      "sms": { "sent": 1273393, "clickRate": 15.9, "conversionRate": 0.09 }
+    },
+    {
+      "date": "2025-11-11",
+      "label": "Veteran's Day/Singles Day",
+      "email": { "sent": 824746200, "clickRate": 2.4, "conversionRate": 0.15 },
+      "sms": { "sent": 1424307, "clickRate": 17.0, "conversionRate": 0.06 }
+    },
+    {
+      "date": "2025-11-26",
+      "label": "Pre-Thanksgiving",
+      "email": { "sent": 1013302698, "clickRate": 1.61, "conversionRate": 0.18 },
+      "sms": { "sent": 1654653, "clickRate": 14.1, "conversionRate": 0.07 }
+    },
+    {
+      "date": "2025-11-27",
+      "label": "Thanksgiving",
+      "email": { "sent": 929582577, "clickRate": 1.51, "conversionRate": 0.23 },
+      "sms": { "sent": 1517036, "clickRate": 15.1, "conversionRate": 0.09 }
+    },
+    {
+      "date": "2025-11-28",
+      "label": "Black Friday",
+      "email": { "sent": 1390289396, "clickRate": 1.3, "conversionRate": 0.23 },
+      "sms": { "sent": 5430859, "clickRate": 16.2, "conversionRate": 0.08 }
+    },
+    {
+      "date": "2025-11-29",
+      "label": "Small Business Saturday",
+      "email": { "sent": 541884269, "clickRate": 1.22, "conversionRate": 0.17 },
+      "sms": { "sent": 1555037, "clickRate": 15.1, "conversionRate": 0.18 }
+    },
+    {
+      "date": "2025-12-01",
+      "label": "Cyber Monday",
+      "email": { "sent": 1300247595, "clickRate": 1.58, "conversionRate": 0.18 },
+      "sms": { "sent": 3405629, "clickRate": 17.3, "conversionRate": 0.11 }
+    },
+    {
+      "date": "2025-12-02",
+      "label": "Giving Tuesday",
+      "email": { "sent": 1153007717, "clickRate": 1.59, "conversionRate": 0.12 },
+      "sms": { "sent": 2429545, "clickRate": 15.4, "conversionRate": 0.08 }
+    },
+    {
+      "date": "2025-12-24",
+      "label": "Christmas Eve",
+      "email": { "sent": 604531920, "clickRate": 1.37, "conversionRate": 0.1 },
+      "sms": { "sent": 966378, "clickRate": 12.3, "conversionRate": 0.06 }
+    },
+    {
+      "date": "2025-12-25",
+      "label": "Christmas Day",
+      "email": { "sent": 359623282, "clickRate": 1.23, "conversionRate": 0.14 },
+      "sms": { "sent": 506612, "clickRate": 11.8, "conversionRate": 0.09 }
+    },
+    {
+      "date": "2025-12-26",
+      "label": "Boxing Day",
+      "email": { "sent": 554817680, "clickRate": 1.38, "conversionRate": 0.14 },
+      "sms": { "sent": 1560126, "clickRate": 16.4, "conversionRate": 0.05 }
+    },
+    {
+      "date": "2025-12-31",
+      "label": "New Year's Eve",
+      "email": { "sent": 674783351, "clickRate": 1.34, "conversionRate": 0.12 },
+      "sms": { "sent": 1842325, "clickRate": 15.5, "conversionRate": 0.05 }
+    }
+  ]
+}

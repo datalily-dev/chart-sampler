@@ -213,11 +213,18 @@
   gap: 28px;
 }
 
+/*
+ * The figure takes its own line under the label until the card is wide enough
+ * to hold both, then moves up beside it and right-aligns. Both sides are nowrap,
+ * and the row can still wrap on its own, so a figure that outgrows its line
+ * drops rather than running off the card.
+ */
 .stats__row {
   display: flex;
+  flex-wrap: wrap;
   align-items: baseline;
   justify-content: space-between;
-  gap: 16px;
+  column-gap: 16px;
   padding-bottom: 8px;
   border-bottom: 1px solid var(--peppercorn);
 }
@@ -226,14 +233,32 @@
   font-size: 21px;
   font-weight: 500;
   line-height: 1.35;
+  white-space: nowrap;
 }
 
 .stats__value {
   margin: 0;
+  flex-basis: 100%;
   font-size: 26px;
   font-weight: 400;
   line-height: 1.35;
-  text-align: right;
+  text-align: left;
+  white-space: nowrap;
+}
+
+/* Narrower than any design covers, and the narrowest the card ever gets: gross
+   revenue needs one size down to clear a 260px card. */
+@media (max-width: 359px) {
+  .stats__value {
+    font-size: 21px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .stats__value {
+    flex-basis: auto;
+    text-align: right;
+  }
 }
 
 .card__footer {
@@ -251,11 +276,35 @@
   line-height: 1.3;
 }
 
+/* Source and disclaimer travel as a pair, so the logo can sit beside both lines
+   on a wide card and drop below them on a narrow one. */
+.card__credits {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
 .card__logo {
   display: block;
   width: 99px;
   height: 28px;
   flex-shrink: 0;
+}
+
+/* The stats card stacks its footer: source, footnote, then logo on its own line. */
+.card--stats .card__footer {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.card--stats .card__source {
+  line-height: 1.4;
+}
+
+.card--stats .card__logo {
+  margin-top: 12px;
 }
 
 /* ---------------------------------------------------------------- tooltip */
@@ -361,13 +410,39 @@
 .card--chart .card__footer {
   margin-top: 28px;
   padding-top: 0;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.card--chart .card__source {
+  line-height: 1.4;
+}
+
+.card--chart .card__logo {
+  margin-top: 12px;
+}
+
+/* Wide enough for the logo to sit beside two lines of credit text. */
+@media (min-width: 1024px) {
+  .card--chart .card__footer {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
+  .card--chart .card__logo {
+    margin-top: 0;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .chart__dot,
   .chart__tooltip,
   .toggle__pill,
-  .tactics__arrow {
+  .tactics__arrow,
+  .tactics__ticker-icon {
     transition: none;
   }
 
@@ -402,9 +477,27 @@
 
 /* ---------------------------------------------------------------- ticker */
 
+/*
+ * A row: the marquee, then the play/pause control flush to the right edge. The
+ * control's 45px is what sets the band's height, so it fills the band rather
+ * than hanging over the section below it.
+ */
 .tactics__ticker {
-  overflow: hidden;
+  display: flex;
+  align-items: center;
   background: var(--cavendish);
+}
+
+/*
+ * Clipping the loop is this element's job alone, so the control's focus ring
+ * lands outside anything that would crop it. Basis 0 rather than auto: the
+ * track is max-content wide, which as an auto basis would price the control out
+ * of the row.
+ */
+.tactics__ticker-viewport {
+  flex: 1 1 0;
+  min-width: 0;
+  overflow: hidden;
   padding-block: 10px;
 }
 
@@ -454,10 +547,70 @@
   }
 }
 
+/*
+ * Playback is a paused animation rather than none, so stopping the loop leaves
+ * it where it is instead of snapping it back to the start. Paused at rest looks
+ * the same as no animation at all: the track holds the keyframe it opens on.
+ */
 @media (prefers-reduced-motion: reduce) {
   .tactics__ticker-track {
-    animation: none;
+    animation-play-state: paused;
   }
+}
+
+/*
+ * Written by ticker.js. Both outrank the reduced-motion default above whatever
+ * the order, so a reader who asked for less motion can still start the loop.
+ */
+.tactics__ticker[data-ticker-state='playing'] .tactics__ticker-track {
+  animation-play-state: running;
+}
+
+.tactics__ticker[data-ticker-state='paused'] .tactics__ticker-track {
+  animation-play-state: paused;
+}
+
+/* Revealed only once ticker.js is running. See the note in that file. */
+.tactics__ticker-toggle {
+  display: none;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 45px;
+  height: 45px;
+  padding: 0;
+  border: 0;
+  background: var(--peppercorn);
+  cursor: pointer;
+}
+
+.tactics__ticker--live .tactics__ticker-toggle {
+  display: flex;
+}
+
+/*
+ * Inset ring: the control sits on the section's right edge, and the report has
+ * no say in what the host page puts against it, so an outset ring risks landing
+ * where it cannot be seen. Cavendish because the box behind it is peppercorn.
+ */
+.tactics__ticker-toggle:focus-visible {
+  outline: 2px solid var(--cavendish);
+  outline-offset: -5px;
+}
+
+.tactics__ticker-icon {
+  display: block;
+  transition: opacity 150ms ease;
+}
+
+.tactics__ticker-toggle:hover .tactics__ticker-icon {
+  opacity: 0.75;
+}
+
+/* The glyph is the action, not the state, so it is the opposite of what runs. */
+.tactics__ticker-toggle[data-state='playing'] .tactics__ticker-icon--play,
+.tactics__ticker-toggle[data-state='paused'] .tactics__ticker-icon--pause {
+  display: none;
 }
 
 /*

@@ -79,7 +79,8 @@ export function takeaway(data, seriesKey) {
   const series = data.series[seriesKey];
   const peak = data.points.reduce((a, b) => (b[seriesKey] > a[seriesKey] ? b : a));
   const total = data.points.reduce((sum, p) => sum + p[seriesKey], 0);
-  const average = Math.round(total / data.points.length);
+  // Floored, not rounded: a published figure may understate, never overstate.
+  const average = Math.floor(total / data.points.length);
 
   return (
     `${series.label} sending peaked at ${withCommas(peak[seriesKey])} ${series.unit} on ` +

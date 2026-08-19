@@ -1,19 +1,10 @@
 /**
  * Regenerates src/data/daily-sends.json.
  *
- * The Figma design has no data bound to it: both charts are static vector art.
- * The marker coordinates are exact though, and the y-axis is a plain linear
- * scale, so the plotted values are recoverable by inverting that scale.
- *
- * Coordinates below are read from the SVG that Figma exports for the plot
- * group (node 72:5926 for email, 73:5961 for SMS). Each series has 19 points;
- * the 17 interior ones are <circle> markers and the two endpoints are the
- * polyline's rounded caps.
- *
- * Six days in this window have figures published in the 2026 Peak Season
- * Marketing Report. Those are used verbatim rather than derived, and they also
- * serve as a check on the derivation: the Black Friday marker inverts to
- * 1.399e9 against a true 1.390e9, an error of 0.65%.
+ * Every day in the window has a published figure, so SENDS below is the source
+ * of truth and the series is written out verbatim. Values are transcribed by
+ * hand, so each one is checked against its axis domain before being written: a
+ * misplaced digit lands outside the plottable range and stops the run.
  *
  * Run: node scripts/derive-series.mjs
  */
@@ -24,116 +15,99 @@ import { dirname, join } from 'node:path';
 
 const OUT = join(dirname(fileURLToPath(import.meta.url)), '..', 'src', 'data', 'daily-sends.json');
 
-const DATES = [
-  '2025-11-20', '2025-11-21', '2025-11-22', '2025-11-23', '2025-11-24',
-  '2025-11-25', '2025-11-26', '2025-11-27', '2025-11-28', '2025-11-29',
-  '2025-11-30', '2025-12-01', '2025-12-02', '2025-12-03', '2025-12-04',
-  '2025-12-05', '2025-12-06', '2025-12-07', '2025-12-08',
-];
-
-/** Marker y positions in the exported plot SVG's own coordinate space. */
-const MARKER_Y = {
-  email: [
-    111.5, 114.5, 250.5, 265.5, 135.5, 85.5, 94.5, 119.5, 5.5, 226.5,
-    216.5, 36.5, 69.5, 142.5, 121.5, 136.5, 256.5, 273.5, 180.5,
-  ],
-  sms: [
-    261.5, 226.5, 293.5, 305.5, 237.5, 214.5, 236.5, 243.5, 5.5, 241.5,
-    280.5, 120.5, 199.5, 222.5, 230.5, 182.5, 289.5, 305.5, 246.5,
-  ],
+const SERIES = {
+  email: {
+    label: 'Email',
+    title: 'Emails sent per day during BFCM 2025',
+    unit: 'emails',
+    axisMax: 1.5e9,
+    axisTicks: [0, 3e8, 6e8, 9e8, 1.2e9, 1.5e9],
+  },
+  sms: {
+    label: 'SMS',
+    title: 'SMS sent per day during BFCM 2025',
+    unit: 'text messages',
+    axisMax: 6e6,
+    axisTicks: [0, 1.5e6, 3e6, 4.5e6, 6e6],
+  },
 };
 
-/**
- * Maps the plot SVG's y space onto data values.
- *
- * `plotTop` is where svg y=0 sits in card coordinates, and the two gridlines
- * give the reference points. For email, card y=134 is 1.5e9 and y=514 is zero;
- * for SMS, card y=134 is 6e6 and y=511 is zero.
- */
-const CALIBRATION = {
-  email: { plotTop: 154, zeroY: 514, maxY: 134, maxValue: 1.5e9 },
-  sms: { plotTop: 169, zeroY: 511, maxY: 134, maxValue: 6e6 },
+/** Published daily figures, November 20 to December 8, 2025. */
+const SENDS = {
+  '2025-11-20': { email: 953_360_234, sms: 1_265_875 },
+  '2025-11-21': { email: 946_589_375, sms: 1_745_337 },
+  '2025-11-22': { email: 411_027_583, sms: 635_572 },
+  '2025-11-23': { email: 364_090_006, sms: 461_892 },
+  '2025-11-24': { email: 890_835_547, sms: 1_536_182 },
+  '2025-11-25': { email: 1_030_004_886, sms: 1_895_030 },
+  '2025-11-26': { email: 1_013_302_698, sms: 1_654_653, holiday: 'Pre-Thanksgiving Day' },
+  '2025-11-27': { email: 929_582_577, sms: 1_517_036, holiday: 'Thanksgiving' },
+  '2025-11-28': { email: 1_390_289_396, sms: 5_430_859, holiday: 'Black Friday' },
+  '2025-11-29': { email: 541_884_269, sms: 1_555_037, holiday: 'Small Business Saturday' },
+  '2025-11-30': { email: 565_537_819, sms: 938_713 },
+  '2025-12-01': { email: 1_300_247_595, sms: 3_405_629, holiday: 'Cyber Monday' },
+  '2025-12-02': { email: 1_153_007_717, sms: 2_429_545, holiday: 'Giving Tuesday' },
+  '2025-12-03': { email: 875_176_041, sms: 1_890_480 },
+  '2025-12-04': { email: 922_316_136, sms: 1_807_044 },
+  '2025-12-05': { email: 886_884_461, sms: 2_471_481 },
+  '2025-12-06': { email: 394_764_686, sms: 663_979 },
+  '2025-12-07': { email: 339_551_035, sms: 489_669 },
+  '2025-12-08': { email: 706_802_909, sms: 1_459_562 },
 };
 
-/** Published figures for the days this window shares with the holiday report. */
-const PUBLISHED = {
-  '2025-11-26': { email: 1_013_302_698, sms: 1_654_653, label: 'Pre-Thanksgiving Day' },
-  '2025-11-27': { email: 929_582_577, sms: 1_517_036, label: 'Thanksgiving' },
-  '2025-11-28': { email: 1_390_289_396, sms: 5_430_859, label: 'Black Friday' },
-  '2025-11-29': { email: 541_884_269, sms: 1_555_037, label: 'Small Business Saturday' },
-  '2025-12-01': { email: 1_300_247_595, sms: 3_405_629, label: 'Cyber Monday' },
-  '2025-12-02': { email: 1_153_007_717, sms: 2_429_545, label: 'Giving Tuesday' },
-};
+const problems = [];
 
-function invertScale(series, markerY) {
-  const { plotTop, zeroY, maxY, maxValue } = CALIBRATION[series];
-  const cardY = plotTop + markerY;
-  return ((zeroY - cardY) / (zeroY - maxY)) * maxValue;
-}
+for (const [date, day] of Object.entries(SENDS)) {
+  for (const [key, series] of Object.entries(SERIES)) {
+    const value = day[key];
 
-/** Rounds to three significant figures, so derived values never imply false precision. */
-function roundSignificant(value) {
-  const magnitude = Math.pow(10, Math.floor(Math.log10(value)) - 2);
-  return Math.round(value / magnitude) * magnitude;
-}
-
-const points = DATES.map((date, i) => {
-  const published = PUBLISHED[date];
-  const point = { date };
-
-  for (const series of ['email', 'sms']) {
-    if (published) {
-      point[series] = published[series];
-    } else {
-      point[series] = roundSignificant(invertScale(series, MARKER_Y[series][i]));
+    if (!Number.isInteger(value) || value <= 0) {
+      problems.push(`${date} ${key}: ${value} is not a positive whole number of ${series.unit}`);
+    } else if (value > series.axisMax) {
+      problems.push(
+        `${date} ${key}: ${value.toLocaleString('en-US')} exceeds the ${series.label} axis max ` +
+          `of ${series.axisMax.toLocaleString('en-US')}`,
+      );
     }
   }
+}
 
-  point.derived = !published;
-  if (published) point.holiday = published.label;
+if (problems.length) {
+  console.error(`Refusing to write: ${problems.length} value(s) outside the plottable range`);
+  for (const problem of problems) console.error(`  ${problem}`);
+  process.exit(1);
+}
 
+const points = Object.entries(SENDS).map(([date, day]) => {
+  const point = { date, email: day.email, sms: day.sms };
+  if (day.holiday) point.holiday = day.holiday;
   return point;
 });
 
 const data = {
-  title: 'Sent per day during BFCM 2025',
+  title: 'Messages sent per day during BFCM 2025',
   range: 'November 20 - December 8',
-  source: '2026 Peak Season Marketing Report',
+  source: 'Breaking Through Peak Season Noise Report, September 2026',
+  // One note for both channels, because the population and the window are the
+  // same on either tab; the sibling charts carry theirs per series only where
+  // the two channels cover different days.
   note:
-    'Points flagged "derived": true were recovered from the Figma chart geometry because no ' +
-    'published daily figure exists for that date. Replace them if exact numbers become available.',
-  series: {
-    email: {
-      label: 'Email',
-      title: 'Emails sent per day during BFCM 2025',
-      unit: 'emails',
-      axisMax: 1.5e9,
-      axisTicks: [0, 3e8, 6e8, 9e8, 1.2e9, 1.5e9],
-    },
-    sms: {
-      label: 'SMS',
-      title: 'SMS sent per day during BFCM 2025',
-      unit: 'text messages',
-      axisMax: 6e6,
-      axisTicks: [0, 1.5e6, 3e6, 4.5e6, 6e6],
-    },
-  },
+    'Daily messages sent by Mailchimp customers on free and paid plans, ' +
+    'November 20-December 8, 2025',
+  series: SERIES,
   points,
 };
 
 writeFileSync(OUT, `${JSON.stringify(data, null, 2)}\n`);
 
-const derivedCount = points.filter((p) => p.derived).length;
-console.log(`Wrote ${points.length} points (${derivedCount} derived) to src/data/daily-sends.json`);
+console.log(`Wrote ${points.length} points to src/data/daily-sends.json`);
 
-for (const [date, published] of Object.entries(PUBLISHED)) {
-  const i = DATES.indexOf(date);
-  for (const series of ['email', 'sms']) {
-    const derived = invertScale(series, MARKER_Y[series][i]);
-    const error = ((derived - published[series]) / published[series]) * 100;
-    console.log(
-      `  check ${date} ${series.padEnd(5)} derived ${derived.toExponential(3)} ` +
-        `vs published ${published[series].toExponential(3)} (${error >= 0 ? '+' : ''}${error.toFixed(1)}%)`,
-    );
-  }
+for (const [key, series] of Object.entries(SERIES)) {
+  const peak = points.reduce((a, b) => (b[key] > a[key] ? b : a));
+  const total = points.reduce((sum, point) => sum + point[key], 0);
+  console.log(
+    `  ${series.label.padEnd(5)} peak ${peak[key].toLocaleString('en-US')} on ${peak.date} ` +
+      `(${peak.holiday ?? 'no holiday'}), daily average ` +
+      `${Math.floor(total / points.length).toLocaleString('en-US')}`,
+  );
 }

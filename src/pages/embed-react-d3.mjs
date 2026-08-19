@@ -16,7 +16,8 @@ export function render() {
     main: html`<div data-sends-per-day-react></div>
       ${tacticsSection()}
       <script src="sends-per-day-react.js" defer></script>
-      <!-- enhance.js is not used on this page; the carousel brings its own. -->
-      <script src="carousel.js" defer></script>`,
+      <!-- enhance.js is not used on this page; the tactics section brings its own. -->
+      <script src="carousel.js" defer></script>
+      <script src="ticker.js" defer></script>`,
   });
 }

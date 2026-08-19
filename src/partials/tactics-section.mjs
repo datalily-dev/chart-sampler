@@ -75,20 +75,62 @@ function tickerGroup() {
   </div>`;
 }
 
+/**
+ * Play/pause for the marquee, as WCAG 2.2 SC 2.2.2 asks for: the loop starts on
+ * its own, runs well past five seconds and never ends.
+ *
+ * It sits beside the marquee rather than inside it on two counts. The marquee is
+ * aria-hidden, and a focusable button in there is one a keyboard reaches but a
+ * screen reader will not name; the marquee is also the element that clips the
+ * loop, which would crop the button's focus ring.
+ *
+ * Both glyphs ship so the swap on click does not wait on a fetch, and the
+ * starting state is playing to match the CSS a no-JS reader gets. ticker.js
+ * corrects that to paused when the reader has asked for reduced motion.
+ */
+function tickerToggle() {
+  return html`<button
+    class="tactics__ticker-toggle"
+    type="button"
+    data-tactics-ticker-toggle
+    data-state="playing"
+    aria-label="Pause the scrolling banner"
+  >
+    <img
+      class="tactics__ticker-icon tactics__ticker-icon--pause"
+      src="img/pause.svg"
+      alt=""
+      width="12"
+      height="16"
+    />
+    <img
+      class="tactics__ticker-icon tactics__ticker-icon--play"
+      src="img/play.svg"
+      alt=""
+      width="16"
+      height="18"
+    />
+  </button>`;
+}
+
 export function tacticsSection({ content = TACTICS, id = 'tactics' } = {}) {
   const headingId = `${id}-heading`;
   const { slides } = content;
 
   return html`<section class="tactics" id="${id}" aria-labelledby="${headingId}">
-    <!--
-      Decorative marquee. Duplicate groups let the track translate -50% for a
-      seamless loop; aria-hidden keeps the repeating slogan out of the a11y tree.
-    -->
-    <div class="tactics__ticker" aria-hidden="true">
-      <div class="tactics__ticker-track">
-        ${tickerGroup()}
-        ${tickerGroup()}
+    <div class="tactics__ticker" data-tactics-ticker>
+      <!--
+        Decorative marquee. Duplicate groups let the track translate -50% for a
+        seamless loop; aria-hidden keeps the repeating slogan out of the a11y tree.
+      -->
+      <div class="tactics__ticker-viewport" aria-hidden="true">
+        <div class="tactics__ticker-track">
+          ${tickerGroup()}
+          ${tickerGroup()}
+        </div>
       </div>
+
+      ${tickerToggle()}
     </div>
 
     <div class="tactics__row">

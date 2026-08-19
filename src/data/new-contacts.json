@@ -1,0 +1,415 @@
+{
+  "title": "New contacts added by day",
+  "range": "November 1 - December 31",
+  "source": "Breaking Through Peak Season Noise Report, September 2026",
+  "series": {
+    "email": {
+      "label": "Email",
+      "unit": "new contacts",
+      "note": "New contacts subscribed for Mailchimp customers on free and paid plans, October 31-December 31, 2025",
+      "thresholds": [
+        7500000,
+        12500000,
+        18000000,
+        21000000
+      ]
+    },
+    "sms": {
+      "label": "SMS",
+      "unit": "new contacts",
+      "note": "New SMS contacts subscribed for Mailchimp customers on free and paid plans, October 31-December 31, 2025",
+      "thresholds": [
+        150000,
+        250000,
+        400000,
+        600000
+      ]
+    }
+  },
+  "points": [
+    {
+      "date": "2025-10-31",
+      "weekday": "Fri",
+      "email": 15965524,
+      "sms": 364323,
+      "holiday": "Halloween"
+    },
+    {
+      "date": "2025-11-01",
+      "weekday": "Sat",
+      "email": 6069034,
+      "sms": 104379
+    },
+    {
+      "date": "2025-11-02",
+      "weekday": "Sun",
+      "email": 5844425,
+      "sms": 59483
+    },
+    {
+      "date": "2025-11-03",
+      "weekday": "Mon",
+      "email": 17417598,
+      "sms": 246760
+    },
+    {
+      "date": "2025-11-04",
+      "weekday": "Tue",
+      "email": 17751593,
+      "sms": 168146
+    },
+    {
+      "date": "2025-11-05",
+      "weekday": "Wed",
+      "email": 18481845,
+      "sms": 210999
+    },
+    {
+      "date": "2025-11-06",
+      "weekday": "Thu",
+      "email": 17500316,
+      "sms": 436653
+    },
+    {
+      "date": "2025-11-07",
+      "weekday": "Fri",
+      "email": 15891511,
+      "sms": 179724
+    },
+    {
+      "date": "2025-11-08",
+      "weekday": "Sat",
+      "email": 6176971,
+      "sms": 100346
+    },
+    {
+      "date": "2025-11-09",
+      "weekday": "Sun",
+      "email": 6055518,
+      "sms": 31590
+    },
+    {
+      "date": "2025-11-10",
+      "weekday": "Mon",
+      "email": 19541478,
+      "sms": 245678
+    },
+    {
+      "date": "2025-11-11",
+      "weekday": "Tue",
+      "email": 19919804,
+      "sms": 238525
+    },
+    {
+      "date": "2025-11-12",
+      "weekday": "Wed",
+      "email": 16740230,
+      "sms": 207167
+    },
+    {
+      "date": "2025-11-13",
+      "weekday": "Thu",
+      "email": 19821588,
+      "sms": 239479
+    },
+    {
+      "date": "2025-11-14",
+      "weekday": "Fri",
+      "email": 18048602,
+      "sms": 231567
+    },
+    {
+      "date": "2025-11-15",
+      "weekday": "Sat",
+      "email": 6464461,
+      "sms": 78459
+    },
+    {
+      "date": "2025-11-16",
+      "weekday": "Sun",
+      "email": 6315645,
+      "sms": 66199
+    },
+    {
+      "date": "2025-11-17",
+      "weekday": "Mon",
+      "email": 20228917,
+      "sms": 332230
+    },
+    {
+      "date": "2025-11-18",
+      "weekday": "Tue",
+      "email": 19594411,
+      "sms": 713571
+    },
+    {
+      "date": "2025-11-19",
+      "weekday": "Wed",
+      "email": 21908471,
+      "sms": 256309
+    },
+    {
+      "date": "2025-11-20",
+      "weekday": "Thu",
+      "email": 20259577,
+      "sms": 464581
+    },
+    {
+      "date": "2025-11-21",
+      "weekday": "Fri",
+      "email": 18761713,
+      "sms": 393832
+    },
+    {
+      "date": "2025-11-22",
+      "weekday": "Sat",
+      "email": 7625502,
+      "sms": 109219
+    },
+    {
+      "date": "2025-11-23",
+      "weekday": "Sun",
+      "email": 6860557,
+      "sms": 102427
+    },
+    {
+      "date": "2025-11-24",
+      "weekday": "Mon",
+      "email": 22969650,
+      "sms": 286830
+    },
+    {
+      "date": "2025-11-25",
+      "weekday": "Tue",
+      "email": 21933846,
+      "sms": 1159742
+    },
+    {
+      "date": "2025-11-26",
+      "weekday": "Wed",
+      "email": 21932377,
+      "sms": 1078793,
+      "holiday": "Pre-Thanksgiving Day"
+    },
+    {
+      "date": "2025-11-27",
+      "weekday": "Thu",
+      "email": 18657191,
+      "sms": 406658,
+      "holiday": "Thanksgiving"
+    },
+    {
+      "date": "2025-11-28",
+      "weekday": "Fri",
+      "email": 15936042,
+      "sms": 366159,
+      "holiday": "Black Friday"
+    },
+    {
+      "date": "2025-11-29",
+      "weekday": "Sat",
+      "email": 8082180,
+      "sms": 138062,
+      "holiday": "Small Business Saturday"
+    },
+    {
+      "date": "2025-11-30",
+      "weekday": "Sun",
+      "email": 9503198,
+      "sms": 102605
+    },
+    {
+      "date": "2025-12-01",
+      "weekday": "Mon",
+      "email": 19911651,
+      "sms": 754047,
+      "holiday": "Cyber Monday"
+    },
+    {
+      "date": "2025-12-02",
+      "weekday": "Tue",
+      "email": 22738282,
+      "sms": 636042,
+      "holiday": "Giving Tuesday"
+    },
+    {
+      "date": "2025-12-03",
+      "weekday": "Wed",
+      "email": 18639439,
+      "sms": 339213
+    },
+    {
+      "date": "2025-12-04",
+      "weekday": "Thu",
+      "email": 17057725,
+      "sms": 394207
+    },
+    {
+      "date": "2025-12-05",
+      "weekday": "Fri",
+      "email": 16471719,
+      "sms": 302166
+    },
+    {
+      "date": "2025-12-06",
+      "weekday": "Sat",
+      "email": 5705253,
+      "sms": 114078
+    },
+    {
+      "date": "2025-12-07",
+      "weekday": "Sun",
+      "email": 6302600,
+      "sms": 150383
+    },
+    {
+      "date": "2025-12-08",
+      "weekday": "Mon",
+      "email": 17114040,
+      "sms": 584560
+    },
+    {
+      "date": "2025-12-09",
+      "weekday": "Tue",
+      "email": 18580480,
+      "sms": 1067807
+    },
+    {
+      "date": "2025-12-10",
+      "weekday": "Wed",
+      "email": 18021874,
+      "sms": 560797
+    },
+    {
+      "date": "2025-12-11",
+      "weekday": "Thu",
+      "email": 18784146,
+      "sms": 340079
+    },
+    {
+      "date": "2025-12-12",
+      "weekday": "Fri",
+      "email": 16278333,
+      "sms": 330406
+    },
+    {
+      "date": "2025-12-13",
+      "weekday": "Sat",
+      "email": 6070621,
+      "sms": 407788
+    },
+    {
+      "date": "2025-12-14",
+      "weekday": "Sun",
+      "email": 6115742,
+      "sms": 99410
+    },
+    {
+      "date": "2025-12-15",
+      "weekday": "Mon",
+      "email": 18194833,
+      "sms": 286089
+    },
+    {
+      "date": "2025-12-16",
+      "weekday": "Tue",
+      "email": 22139716,
+      "sms": 455732
+    },
+    {
+      "date": "2025-12-17",
+      "weekday": "Wed",
+      "email": 20850285,
+      "sms": 430557
+    },
+    {
+      "date": "2025-12-18",
+      "weekday": "Thu",
+      "email": 20181819,
+      "sms": 416286
+    },
+    {
+      "date": "2025-12-19",
+      "weekday": "Fri",
+      "email": 24869797,
+      "sms": 276979
+    },
+    {
+      "date": "2025-12-20",
+      "weekday": "Sat",
+      "email": 9895927,
+      "sms": 321798
+    },
+    {
+      "date": "2025-12-21",
+      "weekday": "Sun",
+      "email": 5069964,
+      "sms": 204225
+    },
+    {
+      "date": "2025-12-22",
+      "weekday": "Mon",
+      "email": 18279519,
+      "sms": 688359
+    },
+    {
+      "date": "2025-12-23",
+      "weekday": "Tue",
+      "email": 16203446,
+      "sms": 609067
+    },
+    {
+      "date": "2025-12-24",
+      "weekday": "Wed",
+      "email": 8208543,
+      "sms": 327279,
+      "holiday": "Christmas Eve"
+    },
+    {
+      "date": "2025-12-25",
+      "weekday": "Thu",
+      "email": 4390262,
+      "sms": 69216,
+      "holiday": "Christmas Day"
+    },
+    {
+      "date": "2025-12-26",
+      "weekday": "Fri",
+      "email": 7008025,
+      "sms": 126977,
+      "holiday": "Boxing Day"
+    },
+    {
+      "date": "2025-12-27",
+      "weekday": "Sat",
+      "email": 4588042,
+      "sms": 99347
+    },
+    {
+      "date": "2025-12-28",
+      "weekday": "Sun",
+      "email": 4783699,
+      "sms": 99363
+    },
+    {
+      "date": "2025-12-29",
+      "weekday": "Mon",
+      "email": 10231677,
+      "sms": 449125
+    },
+    {
+      "date": "2025-12-30",
+      "weekday": "Tue",
+      "email": 10574599,
+      "sms": 215298
+    },
+    {
+      "date": "2025-12-31",
+      "weekday": "Wed",
+      "email": 9622676,
+      "sms": 341634,
+      "holiday": "New Year's Eve"
+    }
+  ],
+  "notes": "Exact counts, written out verbatim. The five colour steps are cut at the thresholds on each series; the email cuts reproduce the fill of all 62 cells in the comp, which scripts/derive-new-contacts.mjs checks before writing. October 31 shares November’s first week, so the calendar carries it there rather than opening a section for one day."
+}

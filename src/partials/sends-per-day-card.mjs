@@ -24,7 +24,10 @@ export function sendsPerDayCard({ data, id = 'sends-per-day', active = 'email' }
     ${dataTable({ data })}
 
     <footer class="card__footer">
-      <p class="card__source">Source: ${data.source}</p>
+      <div class="card__credits">
+        <p class="card__source">Source: ${data.source}</p>
+        ${data.note ? html`<p class="card__source">${data.note}</p>` : ''}
+      </div>
       <img class="card__logo" src="mailchimp-logo.svg" alt="Intuit Mailchimp" width="99" height="28" />
     </footer>
 

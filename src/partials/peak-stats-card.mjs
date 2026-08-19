@@ -24,6 +24,7 @@ export function peakStatsCard({ stats, id = 'peak-stats', active = 'email' }) {
 
     <footer class="card__footer">
       <p class="card__source">Source: ${stats.source}</p>
+      ${stats.note ? html`<p class="card__source">${stats.note}</p>` : ''}
       <img class="card__logo" src="mailchimp-logo.svg" alt="Intuit Mailchimp" width="99" height="28" />
     </footer>
 
